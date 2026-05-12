@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-//hola
+
 package javafxmlapplication;
-//buenas
-//ye
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
