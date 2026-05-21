@@ -75,9 +75,9 @@
                         </Button>
                      </children>
                   </HBox>
-                  <Label fx:id="credencialesIncorrectas" prefHeight="18.0" prefWidth="183.0" textFill="RED">
+                  <Label fx:id="credencialesIncorrectas" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="254.0" textAlignment="RIGHT" textFill="RED">
                      <VBox.margin>
-                        <Insets left="70.0" top="3.0" />
+                        <Insets top="3.0" />
                      </VBox.margin>
                   </Label>
                </children>

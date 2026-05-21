@@ -50,23 +50,32 @@ public class AutenticarseController {
         String nickname = CampoNickName.getText();
         String password = CampoContraseña.getText();
       
-        User usuarioEncontrado = null;
-        
-        for (User u : users) {
-        if (u.getEmail().equals(nickname) && u.getPassword().equals(password)) {
-            usuarioEncontrado = u;
-            break;
+        if (nickname.isEmpty() || password.isEmpty()) {
+            credencialesIncorrectas.setText("Por favor, rellena todos los campos.");
+            return;
         }
         
-        if(usuarioEncontrado != null){
+        // 1. AUTENTICACIÓN OFICIAL: Le pedimos a la librería de la UPV que verifique las credenciales
+        // El método .login() busca en la base de datos SQLite y devuelve true si coinciden [cite: 20, 249]
+        boolean loginCorrecto = false;
+        try {
+            loginCorrecto = upv.ipc.sportlib.SportActivityApp.getInstance().login(nickname, password);
+        } catch (Exception e) {
+            System.out.println("Error al conectar con la base de datos: " + e.getMessage());
+        }
+        
+        // 2. COMPROBACIÓN (Fuera de cualquier bucle)
+        if (loginCorrecto){
             //siguiente pestaña
             FXMLLoader miCargador = new
-            FXMLLoader(getClass().getResource("/ventanaPPal/VentanaPPal.fxml"));
+            FXMLLoader(getClass().getResource("/PantallaPrincipal/PantallaPrincipal.fxml"));
             Parent root = miCargador.load();
-            Scene scene = new Scene(root,500,300);
+            Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Panel Principal");
+            Stage ventanaLogin = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            ventanaLogin.close();
             //la ventana se muestra modal
             stage.show();
         }
@@ -74,25 +83,7 @@ public class AutenticarseController {
             credencialesIncorrectas.setText("Credenciales Incorrectas!");
         }
     }
-    }
-
-    private void IrAlRegistro(ActionEvent event) {
-        try {
-            // Cargamos el FXML de tu pantalla de Registro
-            FXMLLoader miCargador = new FXMLLoader(getClass().getResource("/javafxxmlapplication/Registro.fxml"));
-            Parent root = miCargador.load();
-            
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Usamos la misma ventana
-            
-            stage.setScene(scene);
-            stage.setTitle("Formulario de Registro");
-            stage.show();
-        } catch (IOException e) {
-            System.out.println("Error al abrir la pantalla de registro: " + e.getMessage());
-        }
-    }
-
+    
     @FXML
     private void irAlRegistro(ActionEvent event) {
         try {
