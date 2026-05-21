@@ -37,11 +37,7 @@ public class RegistroController implements Initializable {
     @FXML
     private PasswordField CampoContraseña;
     @FXML
-    private Button BotonSeleccionAvatar;
-    @FXML
     private DatePicker CampoFechaNacimiento;
-    @FXML
-    private Button BotonRegistrarse;
     @FXML
     private ImageView ImagenAvatar;
     @FXML
@@ -54,6 +50,10 @@ public class RegistroController implements Initializable {
     private Label ErrorNickname;
     private Image avatarImage = null;
     private static final Set<String> nicknames = new HashSet<>();
+    @FXML
+    private Button BotonSeleccionAvatar;
+    @FXML
+    private Button BotonRegistrarse;
     /**
      * Initializes the controller class.
      */
