@@ -5,6 +5,7 @@
 package mapademo;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -87,7 +88,7 @@ public class RegistroController implements Initializable {
     }
 
     @FXML
-    private void Registrarse(ActionEvent event) {
+    private void Registrarse(ActionEvent event) throws IOException {
         limpiarErrores();
         
         String nickname = CampoNickName.getText().trim();
@@ -125,8 +126,28 @@ public class RegistroController implements Initializable {
             ErrorFechaNacimiento.setText("");
         }
         
-        if(datosValidos==false) {
-            nicknames.add(nickname);
+        if (datosValidos) { 
+            
+            
+                // Instanciamos o llamamos al método de registro de vuestra librería oficial
+                // Nota: Pasamos el correo como email, y valores vacíos para nombre/apellidos si no los pides en la interfaz
+                upv.ipc.sportlib.SportActivityApp.getInstance().registerUser(
+                        nickname,        // String nickName
+                        correo,          // String email
+                        password,        // String password
+                        fechaNacimiento, // LocalDate birthDate
+                        (javafx.scene.image.Image) null             // Image avatar (le pasamos null provisionalmente)));
+                );
+                // REDIRECCIÓN DE VUELTA AL AUTENTICADOR
+                javafx.fxml.FXMLLoader miCargador = new javafx.fxml.FXMLLoader(getClass().getResource("/autenticarse/Autenticarse.fxml"));
+                javafx.scene.Parent root = miCargador.load();
+                
+                javafx.scene.Scene scene = new javafx.scene.Scene(root);
+                javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+                
+                stage.setScene(scene);
+                stage.setTitle("Iniciar Sesión");
+                stage.show();
         }
     }
     

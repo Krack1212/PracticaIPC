@@ -10,6 +10,7 @@ import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -73,6 +74,40 @@ public class AutenticarseController {
             credencialesIncorrectas.setText("Credenciales Incorrectas!");
         }
     }
+    }
+
+    private void IrAlRegistro(ActionEvent event) {
+        try {
+            // Cargamos el FXML de tu pantalla de Registro
+            FXMLLoader miCargador = new FXMLLoader(getClass().getResource("/javafxxmlapplication/Registro.fxml"));
+            Parent root = miCargador.load();
+            
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Usamos la misma ventana
+            
+            stage.setScene(scene);
+            stage.setTitle("Formulario de Registro");
+            stage.show();
+        } catch (IOException e) {
+            System.out.println("Error al abrir la pantalla de registro: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void irAlRegistro(ActionEvent event) {
+        try {
+            FXMLLoader miCargador = new FXMLLoader(getClass().getResource("/mapademo/Registro.fxml"));
+            Parent root = miCargador.load();
+            
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Usamos la misma ventana
+            
+            stage.setScene(scene);
+            stage.setTitle("Formulario de Registro");
+            stage.show();
+        } catch (IOException e) {
+            System.out.println("Error al abrir la pantalla de registro: " + e.getMessage());
+        }
     }
 
     

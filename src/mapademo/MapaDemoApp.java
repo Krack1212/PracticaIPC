@@ -26,12 +26,20 @@ public class MapaDemoApp extends Application {
         //stage.setTitle("Demo mapas - IPC");
         //stage.setScene(scene);
         //stage.show();
-        Parent root = FXMLLoader.load(getClass().getResource("Registro.fxml"));
-
-        Scene scene = new Scene(root);
-
-        stage.setScene(scene);
-        stage.show();
+        try {
+            // Cargamos el FXML usando la ruta absoluta del paquete
+            Parent root = FXMLLoader.load(getClass().getResource("/autenticarse/Autenticarse.fxml"));
+            
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Autenticación");
+            stage.show();
+            
+        } catch (Exception e) {
+            // Si vuelve a fallar, esto imprimirá el motivo real en la consola de NetBeans
+            System.out.println("❌ ERROR CRÍTICO AL ARRANCAR LA APP: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
