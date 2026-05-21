@@ -20,10 +20,16 @@ public class MapaDemoApp extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/resources/logo.png")));
+        //Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        //stage.getIcons().add(new Image(getClass().getResourceAsStream("/resources/logo.png")));
+        //Scene scene = new Scene(root);
+        //stage.setTitle("Demo mapas - IPC");
+        //stage.setScene(scene);
+        //stage.show();
+        Parent root = FXMLLoader.load(getClass().getResource("Registro.fxml"));
+
         Scene scene = new Scene(root);
-        stage.setTitle("Demo mapas - IPC");
+
         stage.setScene(scene);
         stage.show();
     }
