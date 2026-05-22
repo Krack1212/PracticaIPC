@@ -51,7 +51,7 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Usuario">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Modificar Perfil" />
+                    <MenuItem mnemonicParsing="false" onAction="#ModificarPerfil" text="Modificar Perfil" />
                         <MenuItem mnemonicParsing="false" text="Historial de Sesiones" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" text="Cerrar Sesión" />

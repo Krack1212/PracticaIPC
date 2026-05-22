@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="364.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="autenticarse.AutenticarseController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="autenticarse.AutenticarseController">
    <children>
       <Label prefHeight="90.0" prefWidth="440.0" style="-fx-background-color: #0685BC; -fx-text-fill: white;" text="Autenticarse">
          <padding>
@@ -26,79 +26,20 @@
             <Insets />
          </VBox.margin>
       </Label>
-      <GridPane prefHeight="202.0" prefWidth="440.0">
+      
+      <GridPane prefHeight="220.0" prefWidth="440.0">
         <columnConstraints>
           <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="346.3999725341797" minWidth="10.0" prefWidth="148.8" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="457.6000213623047" minWidth="10.0" prefWidth="276.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="161.4" minHeight="10.0" prefHeight="82.39999389648438" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="228.66666666666669" minHeight="0.0" prefHeight="70.40000610351564" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="228.0" minHeight="0.0" prefHeight="68.60002441406249" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="161.4" minHeight="10.0" prefHeight="85.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="228.66666666666669" minHeight="0.0" prefHeight="80.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="228.0" minHeight="0.0" prefHeight="55.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Contraseña:" textFill="#025477" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets right="15.0" />
-               </GridPane.margin>
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <VBox alignment="CENTER_LEFT" prefHeight="72.0" prefWidth="284.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <children>
-                  <PasswordField fx:id="CampoContraseña" prefHeight="26.0" prefWidth="213.0" promptText="mayúscula, número y símbolo">
-                     <font>
-                        <Font size="11.7" />
-                     </font>
-                     <VBox.margin>
-                        <Insets right="80.0" top="20.0" />
-                     </VBox.margin>
-                  </PasswordField>
-                  <Label fx:id="errorContraseña" prefHeight="17.0" prefWidth="201.0" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER_LEFT" prefHeight="52.0" prefWidth="284.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <children>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="53.0" prefWidth="283.0">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <children>
-                        <Button fx:id="autenticarseButton" mnemonicParsing="false" onAction="#autenticarseButtonPressed" prefHeight="50.0" prefWidth="108.0" style="-fx-background-color: #0685BC; -fx-text-fill: white; -fx-font-weight: bold;" text="Autenticarse">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets right="30.0" top="30.0" />
-                           </HBox.margin>
-                        </Button>
-                     </children>
-                  </HBox>
-                  <Label fx:id="credencialesIncorrectas" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" prefHeight="18.0" prefWidth="254.0" textAlignment="RIGHT" textFill="RED">
-                     <VBox.margin>
-                        <Insets top="3.0" />
-                     </VBox.margin>
-                  </Label>
-               </children>
-            </VBox>
-            <VBox alignment="BOTTOM_LEFT" prefHeight="32.0" prefWidth="284.0" GridPane.columnIndex="1">
-               <children>
-                  <TextField fx:id="CampoNickName" prefHeight="26.0" prefWidth="413.0" promptText="Entre 6 y 15 caracteres">
-                     <VBox.margin>
-                        <Insets right="80.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Label fx:id="errorNickname" prefHeight="17.0" prefWidth="203.0" />
-               </children>
-               <GridPane.margin>
-                  <Insets top="22.0" />
-               </GridPane.margin>
-               <padding>
-                  <Insets bottom="8.0" />
-               </padding>
-            </VBox>
-            <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0">
+            
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Label alignment="BOTTOM_LEFT" text="Nickname:" textFill="#025477">
                      <padding>
@@ -110,11 +51,92 @@
                   </Label>
                </children>
                <GridPane.margin>
-                  <Insets bottom="30.0" />
+                  <Insets bottom="10.0" />
                </GridPane.margin>
             </HBox>
+            
+            <VBox alignment="BOTTOM_LEFT" prefHeight="32.0" prefWidth="284.0" GridPane.columnIndex="1">
+               <children>
+                  <TextField fx:id="CampoNickName" prefHeight="26.0" prefWidth="413.0" promptText="Entre 6 y 15 caracteres">
+                     <VBox.margin>
+                        <Insets right="80.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label fx:id="errorNickname" prefHeight="17.0" prefWidth="203.0" textFill="RED">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+               <GridPane.margin>
+                  <Insets top="10.0" />
+               </GridPane.margin>
+               <padding>
+                  <Insets bottom="4.0" />
+               </padding>
+            </VBox>
+            
+            <Label text="Contraseña:" textFill="#025477" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="15.0" bottom="15.0" />
+               </GridPane.margin>
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            
+            <VBox alignment="CENTER_LEFT" prefHeight="72.0" prefWidth="284.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <PasswordField fx:id="CampoContraseña" prefHeight="26.0" prefWidth="213.0" promptText="mayúscula, número y símbolo">
+                     <font>
+                        <Font size="11.7" />
+                     </font>
+                     <VBox.margin>
+                        <Insets right="80.0" top="10.0" />
+                     </VBox.margin>
+                  </PasswordField>
+                  <Label fx:id="errorContraseña" prefHeight="17.0" prefWidth="201.0" textFill="RED">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+            
+            <VBox alignment="CENTER_LEFT" prefHeight="52.0" prefWidth="284.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="53.0" prefWidth="283.0">
+                     <children>
+                        <Button fx:id="autenticarseButton" mnemonicParsing="false" onAction="#autenticarseButtonPressed" prefHeight="40.0" prefWidth="115.0" style="-fx-background-color: #0685BC; -fx-text-fill: white; -fx-font-weight: bold;" text="Autenticarse">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="30.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <Label fx:id="credencialesIncorrectas" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="245.0" textAlignment="RIGHT" textFill="RED">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets right="30.0" top="2.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+            
          </children>
       </GridPane>
+      
       <HBox alignment="CENTER" prefHeight="56.0" prefWidth="440.0">
          <children>
             <Hyperlink onAction="#irAlRegistro" text="¿No tienes cuenta? Regístrate aquí" />
