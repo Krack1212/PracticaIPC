@@ -5,6 +5,8 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -32,7 +34,11 @@ public class PantallaPrincipalController implements Initializable {
 
     @FXML
     private void atencionALCliente(ActionEvent event) {
-        
+        Alert alert = new Alert(AlertType.INFORMATION);
+     alert.setTitle("Atención al cliente");
+     alert.setHeaderText("AYUDA");
+     alert.setContentText("Contacta a osanjim@upv.edu.es, imareng@upv.edu.es o rlargra@upv.edu.es");
+     alert.showAndWait();
     }
 
     @FXML
