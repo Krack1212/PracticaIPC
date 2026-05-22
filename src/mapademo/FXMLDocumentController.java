@@ -483,7 +483,6 @@ public class FXMLDocumentController implements Initializable {
      *
      * @param event evento de acción del menú
      */
-    @FXML
     private void about(ActionEvent event) {
         Alert mensaje = new Alert(Alert.AlertType.INFORMATION);
 
@@ -581,7 +580,6 @@ public class FXMLDocumentController implements Initializable {
      * @param event evento de acción del menú
      * @throws IOException si hay un problema al obtener la ruta canónica
      */
-    @FXML
     private void cambiarMapa(ActionEvent event) throws IOException {
         FileChooser fc = new FileChooser();
         fc.setInitialDirectory(new File(".")); // Empezamos en el directorio del proyecto
@@ -617,6 +615,10 @@ public class FXMLDocumentController implements Initializable {
         circle.setCenterX(x);
         circle.setCenterY(y);
         mapPane.getChildren().add(circle); // Se añade sobre el mapa como cualquier nodo
+    }
+
+    @FXML
+    private void atencionALCliente(ActionEvent event) {
     }
 
 
