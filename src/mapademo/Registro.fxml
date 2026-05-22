@@ -123,7 +123,7 @@
             </VBox>
             <VBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="284.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <children>
-                  <ImageView fx:id="ImagenAvatar" fitHeight="96.0" fitWidth="106.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView id="ImagenAvatar" fx:id="ImagenAvatar" fitHeight="96.0" fitWidth="106.0" pickOnBounds="true" preserveRatio="true">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>

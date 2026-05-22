@@ -1,0 +1,16 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 22 may 2026, 9:45:42
+    Author     : Rafols
+*/
+
+#ImagenAvatar {
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    /* Esto recorta el contenido excedente de los bordes del nodo */
+    -fx-background-size: cover;
+    
+}
