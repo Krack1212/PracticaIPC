@@ -21,11 +21,6 @@
             </Label>
             <!-- Este HBox invisible empuja el botón de borrar hacia la derecha extrema -->
             <HBox HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnBorrarTodo" mnemonicParsing="false" onAction="#onBorrarTodoClick" style="-fx-text-fill: #d9534f; -fx-background-color: transparent; -fx-cursor: hand;" text="Borrar todo">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Button>
          </children>
          <padding>
             <Insets left="20.0" right="20.0" />

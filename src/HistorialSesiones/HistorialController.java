@@ -8,7 +8,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -20,22 +22,25 @@ import upv.ipc.sportlib.User;
 
 public class HistorialController {
 
-    @FXML private TableView<Session> tablaSesiones;
-    @FXML private TableColumn<Session, LocalDateTime> colInicio;
-    @FXML private TableColumn<Session, Duration> colDuracion;
-    @FXML private TableColumn<Session, Integer> colImportadas;
-    @FXML private TableColumn<Session, Integer> colVisualizadas;
-    @FXML private TableColumn<Session, Integer> colAnotaciones;
+    private TableView<Session> tablaSesiones;
+    private TableColumn<Session, LocalDateTime> colInicio;
+    private TableColumn<Session, Duration> colDuracion;
+    private TableColumn<Session, Integer> colImportadas;
+    private TableColumn<Session, Integer> colVisualizadas;
+    private TableColumn<Session, Integer> colAnotaciones;
 
-    @FXML private Label lblTotalTiempo;
-    @FXML private Label lblTotalImportadas;
-    @FXML private Label lblTotalVistas;
-    @FXML private Label lblTotalAnotaciones;
+    private Label lblTotalTiempo;
+    private Label lblTotalImportadas;
+    private Label lblTotalVistas;
+    private Label lblTotalAnotaciones;
 
     private SportActivityApp app;
     private ObservableList<Session> listaSesiones = FXCollections.observableArrayList();
-
     @FXML
+    private Button btnVolver;
+    @FXML
+    private ListView<?> listViewHistorial;
+
     public void initialize() {
         // 1. Obtener la instancia singleton de la aplicación
         app = SportActivityApp.getInstance();
