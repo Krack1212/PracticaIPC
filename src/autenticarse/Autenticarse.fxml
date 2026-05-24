@@ -20,16 +20,16 @@
 
     <children>
 
-        <!-- Logo -->
+       
         <ImageView fitHeight="80" fitWidth="80" preserveRatio="true">
             <image><Image url="@../resources/logo.png" /></image>
         </ImageView>
 
-        <!-- Títulos -->
+        
         <Label text="Running la Safor" styleClass="title-label" />
         <Label text="Interfaces Persona-Computador — IPC 2026" styleClass="subtitle-label" />
 
-        <!-- Tarjeta de login -->
+        
         <VBox spacing="10" maxWidth="360" styleClass="card">
 
             <Label text="Iniciar sesión" style="-fx-font-size: 17px; -fx-font-weight: bold;" />
@@ -40,7 +40,7 @@
             <Label text="Contraseña:" />
             <PasswordField fx:id="txtPassword" promptText="Introduce tu contraseña" />
 
-            <!-- Mensaje de error (oculto hasta que se necesite) -->
+            
             <Label fx:id="lblError" styleClass="error-label"
                    visible="false" managed="false" wrapText="true" />
 

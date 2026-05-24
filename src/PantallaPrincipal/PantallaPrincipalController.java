@@ -64,18 +64,10 @@ import upv.ipc.sportlib.SportActivityApp;
 import upv.ipc.sportlib.TrackPoint;
 import upv.ipc.sportlib.User;
 
-/**
- * Controlador principal de la aplicación Running la Safor.
- *
- * Gestiona el mapa (zoom, ruta, anotaciones), la lista de actividades,
- * las estadísticas, el perfil de desnivel y la navegación a otras vistas.
- *
- * Patrón de zoom:
- *   ScrollPane → contentGroup → zoomGroup (escalado) → mapPane (Pane con imagen)
- */
+
 public class PantallaPrincipalController implements Initializable {
 
-    // ── FXML ────────────────────────────────────────────────────────────────
+    
     @FXML private ListView<Activity>         listActividades;
     @FXML private ScrollPane                 mapScrollPane;
     @FXML private Slider                     zoomSlider;
@@ -93,21 +85,21 @@ public class PantallaPrincipalController implements Initializable {
     @FXML private NumberAxis                 chartYAxis;
     @FXML private CheckBox                   chkVelocidad;
 
-    // Stats labels
+    
     @FXML private Label lblDist, lblDuracion, lblVelMedia, lblRitmo;
     @FXML private Label lblDesnPos, lblDesnNeg, lblAltMin, lblAltMax;
     @FXML private Label lblAcumDist, lblAcumTiempo, lblAcumDesn;
 
-    // ── Estado del mapa ──────────────────────────────────────────────────────
+    
     private Group       zoomGroup;
     private Pane        mapPane;
-    private Group       routeGroup;           // nodos de ruta (Polyline, segmentos, marcadores)
+    private Group       routeGroup;           
     private MapProjection projection;
     private Activity    currentActivity;
-    private Circle      hoverMarker;          // marcador de hover en el mapa
+    private Circle      hoverMarker;          
     private boolean     showVelocity = false;
 
-    // ── Estado de anotaciones (máquina de estados) ───────────────────────────
+    
     private AnnotationType pendingType        = null;
     private GeoPoint       pendingFirstPoint  = null;
     private String         pendingText        = null;
@@ -120,7 +112,7 @@ public class PantallaPrincipalController implements Initializable {
     private final LocalDateTime         sessionStart = LocalDateTime.now();
     private static final DateTimeFormatter FMT_DT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    // ── Inicialización ───────────────────────────────────────────────────────
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -201,7 +193,7 @@ public class PantallaPrincipalController implements Initializable {
         lblSesionInfo.setText("Sesión iniciada: " + sessionStart.format(FMT_DT));
     }
 
-    // ── Zoom ────────────────────────────────────────────────────────────────
+    
 
     @FXML private void zoomIn()    { zoomSlider.setValue(zoomSlider.getValue() + 0.15); }
     @FXML private void zoomOut()   { zoomSlider.setValue(zoomSlider.getValue() - 0.15); }
@@ -217,7 +209,7 @@ public class PantallaPrincipalController implements Initializable {
         mapScrollPane.setVvalue(v);
     }
 
-    // ── Visualización de actividad ───────────────────────────────────────────
+    
 
     private void mostrarActividad(Activity act) {
         currentActivity = act;
@@ -242,7 +234,7 @@ public class PantallaPrincipalController implements Initializable {
         lblEstado.setText("Actividad: " + act.getName());
     }
 
-    // ── Construcción del mapa ────────────────────────────────────────────────
+    
 
     private void construirMapa(MapRegion region) {
         File imgFile = new File(region.getImagePath());
@@ -256,7 +248,7 @@ public class PantallaPrincipalController implements Initializable {
         double W = img.getWidth();
         double H = img.getHeight();
 
-        // Pane con la imagen de fondo
+        
         mapPane = new Pane();
         mapPane.setPrefSize(W, H);
         mapPane.setMinSize(W, H);
@@ -266,12 +258,12 @@ public class PantallaPrincipalController implements Initializable {
         iv.setFitHeight(H);
         mapPane.getChildren().add(iv);
 
-        // Grupo para los nodos de ruta (facilita limpiar solo la ruta)
+       
         routeGroup = new Group();
         routeGroup.setMouseTransparent(true);
         mapPane.getChildren().add(routeGroup);
 
-        // Marcador de hover para la gráfica
+        
         hoverMarker = new Circle(6, Color.YELLOW);
         hoverMarker.setStroke(Color.ORANGE);
         hoverMarker.setStrokeWidth(2);
@@ -279,10 +271,10 @@ public class PantallaPrincipalController implements Initializable {
         hoverMarker.setMouseTransparent(true);
         mapPane.getChildren().add(hoverMarker);
 
-        // Proyección GPS → píxeles
+        
         projection = new MapProjection(region, W, H);
 
-        // Eventos del ratón sobre el mapa
+        
         mapPane.setOnMouseClicked(e -> onMapClicked(e));
         mapPane.setOnMouseMoved(e -> {
             if (projection != null) {
@@ -292,7 +284,7 @@ public class PantallaPrincipalController implements Initializable {
             }
         });
 
-        // Jerarquía para zoom: contentGroup → zoomGroup → mapPane
+        
         zoomGroup   = new Group(mapPane);
         Group contentGroup = new Group(zoomGroup);
 
@@ -303,13 +295,13 @@ public class PantallaPrincipalController implements Initializable {
         mapScrollPane.setContent(contentGroup);
     }
 
-    // ── Eventos de clic en el mapa ───────────────────────────────────────────
+    
 
     private void onMapClicked(javafx.scene.input.MouseEvent e) {
         if (currentActivity == null) return;
         mapContextMenu.hide();
 
-        // Segundo punto de anotación (para LINE y CIRCLE)
+        
         if (pendingType != null && pendingFirstPoint != null &&
             e.getButton() == MouseButton.PRIMARY) {
             GeoPoint secondPoint = projection.unproject(e.getX(), e.getY());
@@ -321,7 +313,7 @@ public class PantallaPrincipalController implements Initializable {
         }
 
         if (e.getButton() == MouseButton.SECONDARY) {
-            // Guardar posición del primer punto para la anotación
+            
             pendingFirstPoint = projection.unproject(e.getX(), e.getY());
             mapContextMenu.show(mapPane.getScene().getWindow(),
                 mapPane.localToScreen(e.getX(), e.getY()).getX(),
@@ -329,12 +321,12 @@ public class PantallaPrincipalController implements Initializable {
         }
     }
 
-    // ── Anotaciones ─────────────────────────────────────────────────────────
+    
 
     private void iniciarAnotacion(AnnotationType type) {
         if (currentActivity == null || pendingFirstPoint == null) return;
 
-        // Pedir texto y color al usuario
+        
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Nueva anotación — " + type.name());
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -363,12 +355,12 @@ public class PantallaPrincipalController implements Initializable {
         pendingType  = type;
 
         if (type == AnnotationType.POINT || type == AnnotationType.TEXT) {
-            // Un solo punto → guardar ya
+            
             guardarAnotacion(List.of(pendingFirstPoint));
             pendingType = null;
             pendingFirstPoint = null;
         } else {
-            // LINE / CIRCLE → esperar segundo clic izquierdo
+            
             lblEstado.setText("Haz clic izquierdo para colocar el segundo punto de la " + type.name());
             mapPane.setCursor(javafx.scene.Cursor.CROSSHAIR);
         }
@@ -449,7 +441,7 @@ public class PantallaPrincipalController implements Initializable {
         }
     }
 
-    // ── Dibujo de la ruta ────────────────────────────────────────────────────
+    
 
     private void dibujarRuta(Activity act, MapRegion region) {
         List<TrackPoint> tps = act.getTrackPoints();
@@ -461,7 +453,7 @@ public class PantallaPrincipalController implements Initializable {
             dibujarRutaNormal(tps);
         }
 
-        // Marcadores de inicio (verde) y fin (rojo)
+        
         Point2D inicio = projection.project(tps.get(0));
         Point2D fin    = projection.project(tps.get(tps.size() - 1));
 
@@ -488,7 +480,7 @@ public class PantallaPrincipalController implements Initializable {
     private void dibujarRutaVelocidad(List<TrackPoint> tps) {
         if (tps.size() < 2) { dibujarRutaNormal(tps); return; }
 
-        // Calcular rango de velocidades
+        
         double vMin = Double.MAX_VALUE, vMax = 0;
         double[] speeds = new double[tps.size() - 1];
         for (int i = 0; i < tps.size() - 1; i++) {
@@ -502,7 +494,7 @@ public class PantallaPrincipalController implements Initializable {
             Point2D p2 = projection.project(tps.get(i + 1));
             double t   = (vMax > vMin) ? (speeds[i] - vMin) / (vMax - vMin) : 0.5;
 
-            // Verde (lento) → Amarillo (medio) → Rojo (rápido)
+            
             Color c = t < 0.5
                 ? Color.GREEN.interpolate(Color.YELLOW, t * 2)
                 : Color.YELLOW.interpolate(Color.RED, (t - 0.5) * 2);
@@ -514,7 +506,7 @@ public class PantallaPrincipalController implements Initializable {
         }
     }
 
-    // ── Estadísticas ─────────────────────────────────────────────────────────
+    
 
     private void mostrarEstadisticas(Activity act) {
         double km = act.getTotalDistance() / 1000.0;
@@ -535,7 +527,7 @@ public class PantallaPrincipalController implements Initializable {
         lblStatsPlaceholder.setManaged(false);
     }
 
-    // ── Gráfica de desnivel ──────────────────────────────────────────────────
+    
 
     private void dibujarGraficaDesnivel(Activity act) {
         elevationChart.getData().clear();
@@ -558,7 +550,7 @@ public class PantallaPrincipalController implements Initializable {
         elevationChart.setVisible(true);
         elevationChart.setManaged(true);
 
-        // Hover: al mover el ratón sobre la gráfica, destacar punto en el mapa
+        
         final List<TrackPoint> tpsFinal = tps;
         final List<Double> distancias = new ArrayList<>();
         double d = 0;
@@ -571,11 +563,11 @@ public class PantallaPrincipalController implements Initializable {
 
         elevationChart.setOnMouseMoved(ev -> {
             if (projection == null || hoverMarker == null) return;
-            // Estimar la posición relativa dentro del área de la gráfica
+            
             double pct = Math.max(0, Math.min(1, ev.getX() / elevationChart.getWidth()));
             double distObj = pct * maxDist;
 
-            // Buscar el TrackPoint más cercano en distancia
+            
             int idx = 0;
             double menorDif = Math.abs(distancias.get(0) - distObj);
             for (int i = 1; i < distancias.size(); i++) {
@@ -594,7 +586,7 @@ public class PantallaPrincipalController implements Initializable {
         });
     }
 
-    // ── Acumulado mensual ────────────────────────────────────────────────────
+    
 
     private void actualizarAcumuladoMes(List<Activity> todas) {
         int mesActual = LocalDateTime.now().getMonthValue();
@@ -621,7 +613,7 @@ public class PantallaPrincipalController implements Initializable {
         lblAcumDesn.setText(String.format("+%.0f / -%.0f m", gainTotal, lossTotal));
     }
 
-    // ── Acciones del menú ────────────────────────────────────────────────────
+    
 
     @FXML
     private void importarActividad() {
@@ -681,7 +673,7 @@ public class PantallaPrincipalController implements Initializable {
     private void toggleVelocidad() {
         showVelocity = chkVelocidad.isSelected();
         if (currentActivity != null) {
-            // Redibujar la ruta con el nuevo modo
+            
             limpiarCapasRuta();
             if (currentActivity.getSuggestedMap() != null) {
                 dibujarRuta(currentActivity, currentActivity.getSuggestedMap());
@@ -706,7 +698,7 @@ public class PantallaPrincipalController implements Initializable {
     private void abrirModificarPerfil() {
         abrirVentanaModal("/ModificarPerfil/Modificar.fxml",
             "Modificar perfil", 500, 560);
-        // Recargar datos de usuario por si cambió el avatar/nick
+        
         cargarInfoUsuario();
     }
 
@@ -731,7 +723,7 @@ public class PantallaPrincipalController implements Initializable {
         a.showAndWait();
     }
 
-    // ── Diálogo: añadir mapa ─────────────────────────────────────────────────
+   
 
     private void dialogAnadirMapa() {
         Dialog<ButtonType> dlg = new Dialog<>();
@@ -793,7 +785,7 @@ public class PantallaPrincipalController implements Initializable {
         }
     }
 
-    // ── Diálogo: gestionar mapas ─────────────────────────────────────────────
+   
 
     private void dialogGestionarMapas() {
         List<MapRegion> regiones = app.getMapRegions();
@@ -813,7 +805,7 @@ public class PantallaPrincipalController implements Initializable {
         a.showAndWait();
     }
 
-    // ── Helpers ──────────────────────────────────────────────────────────────
+    
 
     private void ocultarStatsYChart() {
         gridStats.setVisible(false);
@@ -824,7 +816,7 @@ public class PantallaPrincipalController implements Initializable {
         lblStatsPlaceholder.setManaged(true);
     }
 
-    /** Elimina todos los nodos de ruta del routeGroup para poder redibujar. */
+    
     private void limpiarCapasRuta() {
         if (routeGroup != null) {
             routeGroup.getChildren().clear();

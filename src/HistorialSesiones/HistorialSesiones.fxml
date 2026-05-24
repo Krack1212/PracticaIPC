@@ -14,7 +14,6 @@
             fx:controller="HistorialSesiones.HistorialController"
             style="-fx-background-color: #f0f4f8;">
 
-    <!-- Cabecera -->
     <top>
         <HBox alignment="CENTER_LEFT" spacing="12"
               style="-fx-background-color: #2c3e50; -fx-padding: 12 16;">
@@ -23,7 +22,6 @@
         </HBox>
     </top>
 
-    <!-- Tabla de sesiones -->
     <center>
         <VBox spacing="10" style="-fx-padding: 16;">
             <TableView fx:id="tablaSesiones" VBox.vgrow="ALWAYS">
@@ -37,7 +35,7 @@
                 </columns>
             </TableView>
 
-            <!-- Totales acumulados -->
+            
             <HBox spacing="30" alignment="CENTER"
                   style="-fx-padding: 8 12; -fx-background-color: #dfe6e9; -fx-background-radius: 6;">
                 <VBox alignment="CENTER">
@@ -60,7 +58,7 @@
         </VBox>
     </center>
 
-    <!-- Botón cerrar -->
+    
     <bottom>
         <HBox alignment="CENTER_RIGHT" style="-fx-padding: 8 16;">
             <Button text="Cerrar" onAction="#cerrar" styleClass="btn-secondary" />

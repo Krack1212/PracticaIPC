@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
+
 package mapademo;
 
 import java.io.File;
@@ -21,12 +18,7 @@ import javafx.stage.FileChooser;
 import upv.ipc.sportlib.SportActivityApp;
 import upv.ipc.sportlib.User;
 
-/**
- * Controlador de la pantalla de registro de nuevos usuarios.
- *
- * Valida los campos usando los métodos estáticos de User antes de
- * llamar a app.registerUser().
- */
+
 public class RegistroController implements Initializable {
 
     @FXML private TextField   txtNick;
@@ -53,7 +45,7 @@ public class RegistroController implements Initializable {
         });
     }
 
-    /** Abre FileChooser para seleccionar imagen de avatar. */
+    
     @FXML
     private void seleccionarAvatar() {
         FileChooser fc = new FileChooser();
@@ -68,7 +60,7 @@ public class RegistroController implements Initializable {
         }
     }
 
-    /** Valida todos los campos y registra el usuario si todo es correcto. */
+    
     @FXML
     private void registrar() {
         limpiarErrores();
@@ -79,26 +71,26 @@ public class RegistroController implements Initializable {
         String pass  = txtPassword.getText();
         LocalDate birth = dpBirthDate.getValue();
 
-        // Validar nickname
+        
         if (!User.checkNickName(nick)) {
             mostrarCampoError(lblNickError, "Nickname inválido: 6-15 caracteres, solo letras, dígitos, - o _");
             valido = false;
         }
 
-        // Validar email
+        
         if (!User.checkEmail(email)) {
             mostrarCampoError(lblEmailError, "Email inválido: formato usuario@dominio.extensión");
             valido = false;
         }
 
-        // Validar contraseña
+        
         if (!User.checkPassword(pass)) {
             mostrarCampoError(lblPassError,
                 "Contraseña inválida: 8-20 chars, al menos una mayúscula, minúscula, dígito y símbolo (!@#$%&*()-+=)");
             valido = false;
         }
 
-        // Validar fecha y edad mínima (> 12 años)
+        
         if (birth == null) {
             mostrarCampoError(lblFechaError, "Debes indicar la fecha de nacimiento.");
             valido = false;
@@ -117,13 +109,13 @@ public class RegistroController implements Initializable {
         }
     }
 
-    /** Vuelve a la pantalla de login. */
+    
     @FXML
     private void volverLogin() {
         MapaDemo.cargarVista("/autenticarse/Autenticarse.fxml", 480, 560, false);
     }
 
-    // ---- helpers ----
+    
 
     private void mostrarCampoError(Label lbl, String msg) {
         lbl.setText(msg);

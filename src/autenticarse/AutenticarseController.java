@@ -10,12 +10,6 @@ import javafx.scene.control.TextField;
 import mapademo.MapaDemo;
 import upv.ipc.sportlib.SportActivityApp;
 
-/**
- * Controlador de la pantalla de autenticación.
- *
- * Valida credenciales mediante SportActivityApp y, si son correctas,
- * carga la pantalla principal de la aplicación.
- */
 public class AutenticarseController implements Initializable {
 
     @FXML private TextField     txtNick;
@@ -26,12 +20,10 @@ public class AutenticarseController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Ocultar error al cambiar el contenido de los campos
-        txtNick.textProperty().addListener((o, v, n) -> ocultarError());
-        txtPassword.textProperty().addListener((o, v, n) -> ocultarError());
+        txtNick.setOnKeyPressed(e -> ocultarError());
+        txtPassword.setOnKeyPressed(e -> ocultarError());
     }
 
-    /** Intenta autenticar con los datos introducidos. */
     @FXML
     private void login() {
         String nick = txtNick.getText().trim();
@@ -43,7 +35,9 @@ public class AutenticarseController implements Initializable {
         }
 
         boolean ok = app.login(nick, pass);
+        
         if (ok) {
+            app.login(nick, pass);
             MapaDemo.cargarVista("/PantallaPrincipal/PantallaPrincipal.fxml", 1200, 750, true);
         } else {
             mostrarError("Nickname o contraseña incorrectos.");
@@ -51,7 +45,6 @@ public class AutenticarseController implements Initializable {
         }
     }
 
-    /** Navega a la pantalla de registro. */
     @FXML
     private void irARegistro() {
         MapaDemo.cargarVista("/mapademo/Registro.fxml", 480, 660, false);
@@ -64,7 +57,9 @@ public class AutenticarseController implements Initializable {
     }
 
     private void ocultarError() {
-        lblError.setVisible(false);
-        lblError.setManaged(false);
+        if (lblError.isVisible()) {
+            lblError.setVisible(false);
+            lblError.setManaged(false);
+        }
     }
 }

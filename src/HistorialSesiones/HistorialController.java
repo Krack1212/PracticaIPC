@@ -16,11 +16,7 @@ import upv.ipc.sportlib.Session;
 import upv.ipc.sportlib.SportActivityApp;
 import upv.ipc.sportlib.User;
 
-/**
- * Controlador de la pantalla de historial de sesiones.
- *
- * Carga todas las sesiones del usuario autenticado y calcula totales acumulados.
- */
+
 public class HistorialController implements Initializable {
 
     @FXML private TableView<Session>                tablaSesiones;
@@ -81,7 +77,7 @@ public class HistorialController implements Initializable {
         List<Session> sesiones = app.getSessionsByUser(user);
         tablaSesiones.setItems(FXCollections.observableArrayList(sesiones));
 
-        // Totales acumulados
+        
         long totalImport  = sesiones.stream().mapToLong(Session::getImportedActivities).sum();
         long totalVistas   = sesiones.stream().mapToLong(Session::getViewedActivities).sum();
         long totalAnotac  = sesiones.stream().mapToLong(Session::getAnnotationsCreated).sum();
@@ -92,7 +88,7 @@ public class HistorialController implements Initializable {
         lblTotalAnotac.setText(String.valueOf(totalAnotac));
     }
 
-    /** Cierra esta ventana de historial (si se abre como Stage separado). */
+   
     @FXML
     private void cerrar() {
         Stage stage = (Stage) tablaSesiones.getScene().getWindow();

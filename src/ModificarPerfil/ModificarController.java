@@ -19,12 +19,7 @@ import mapademo.MapaDemo;
 import upv.ipc.sportlib.SportActivityApp;
 import upv.ipc.sportlib.User;
 
-/**
- * Controlador de la pantalla de modificación de perfil.
- *
- * Carga los datos actuales del usuario y los persiste tras validarlos
- * mediante User.checkEmail(), User.checkPassword() y User.isOlderThan().
- */
+
 public class ModificarController implements Initializable {
 
     @FXML private TextField     txtNick;
@@ -52,7 +47,6 @@ public class ModificarController implements Initializable {
         cargarDatosUsuario();
     }
 
-    /** Rellena el formulario con los datos actuales del usuario. */
     private void cargarDatosUsuario() {
         User u = app.getCurrentUser();
         if (u == null) return;
@@ -70,7 +64,6 @@ public class ModificarController implements Initializable {
         }
     }
 
-    /** Abre selector de imagen para el avatar. */
     @FXML
     private void seleccionarAvatar() {
         FileChooser fc = new FileChooser();
@@ -85,14 +78,12 @@ public class ModificarController implements Initializable {
         }
     }
 
-    /** Elimina el avatar actual. */
     @FXML
     private void quitarAvatar() {
         avatarPath = null;
         ivAvatar.setImage(null);
     }
 
-    /** Valida y guarda los cambios del perfil. */
     @FXML
     private void guardar() {
         limpiarErrores();
@@ -107,7 +98,7 @@ public class ModificarController implements Initializable {
             valido = false;
         }
 
-        // Contraseña vacía → conservar la actual; si hay texto → validar
+        
         if (!pass.isEmpty() && !User.checkPassword(pass)) {
             mostrarCampoError(lblPassError,
                 "Contraseña inválida: 8-20 chars, mayúscula, minúscula, dígito y símbolo");
@@ -124,7 +115,7 @@ public class ModificarController implements Initializable {
 
         if (!valido) return;
 
-        // Si el campo contraseña está vacío, conservar la contraseña actual
+        
         String passToSave = pass.isEmpty() ? app.getCurrentUser().getPassword() : pass;
 
         boolean ok = app.updateCurrentUser(email, passToSave, birth, avatarPath);
@@ -135,10 +126,10 @@ public class ModificarController implements Initializable {
         }
     }
 
-    /** Vuelve a la pantalla principal sin guardar cambios. */
+    
     @FXML
     private void cancelar() {
-        // Si se abre como Stage separado, cerrar; si está embebida, volver al main
+        
         try {
             Stage stage = (Stage) txtNick.getScene().getWindow();
             stage.close();
@@ -147,7 +138,7 @@ public class ModificarController implements Initializable {
         }
     }
 
-    // ---- helpers ----
+    
 
     private void mostrarCampoError(Label lbl, String msg) {
         lbl.setText(msg);

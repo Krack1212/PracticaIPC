@@ -28,13 +28,13 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="PantallaPrincipal.PantallaPrincipalController">
 
-    <!-- ═══════════ TOP: MenuBar + barra de usuario ═══════════ -->
+    
     <top>
         <VBox>
-            <!-- Menú principal -->
+            
             <MenuBar>
                 <menus>
-                    <!-- Menú Actividades -->
+                    
                     <Menu text="Actividades">
                         <items>
                             <MenuItem text="Importar GPX..."   onAction="#importarActividad" accelerator="CTRL+I" />
@@ -45,7 +45,7 @@
                         </items>
                     </Menu>
 
-                    <!-- Menú Usuario -->
+                    
                     <Menu text="Usuario">
                         <items>
                             <MenuItem text="Modificar perfil..."      onAction="#abrirModificarPerfil" />
@@ -55,7 +55,7 @@
                         </items>
                     </Menu>
 
-                    <!-- Menú Mapas -->
+                    
                     <Menu text="Mapas">
                         <items>
                             <MenuItem text="Añadir mapa..."   onAction="#anadirMapa" />
@@ -63,7 +63,7 @@
                         </items>
                     </Menu>
 
-                    <!-- Menú Ayuda -->
+                    
                     <Menu text="Ayuda">
                         <items>
                             <MenuItem text="Acerca de..." onAction="#acercaDe" />
@@ -72,7 +72,7 @@
                 </menus>
             </MenuBar>
 
-            <!-- Barra de usuario + controles de zoom -->
+            
             <HBox alignment="CENTER_LEFT" spacing="10"
                   style="-fx-background-color: #34495e; -fx-padding: 8 14;">
                 <ImageView fx:id="ivUserAvatar" fitWidth="34" fitHeight="34"
@@ -102,14 +102,14 @@
         </VBox>
     </top>
 
-    <!-- ═══════════ CENTER: Panel actividades + Mapa + Stats ═══════════ -->
+    
     <center>
         <SplitPane dividerPositions="0.22">
 
-            <!-- ────── Panel izquierdo: lista de actividades ────── -->
+            
             <VBox minWidth="180" style="-fx-background-color: #2c3e50;">
 
-                <!-- Título y botones -->
+                
                 <HBox alignment="CENTER" spacing="6"
                       style="-fx-padding: 10 8; -fx-background-color: #1a252f;">
                     <Label text="MIS ACTIVIDADES" styleClass="sidebar-title" />
@@ -123,11 +123,11 @@
                             maxWidth="Infinity" HBox.hgrow="ALWAYS" />
                 </HBox>
 
-                <!-- Lista de actividades -->
+                
                 <ListView fx:id="listActividades" VBox.vgrow="ALWAYS"
                           style="-fx-background-color: #2c3e50; -fx-border-color: transparent;" />
 
-                <!-- Acumulado del mes -->
+                
                 <VBox style="-fx-background-color: #1a252f; -fx-padding: 10 8;" spacing="4">
                     <Label text="RESUMEN MES" styleClass="sidebar-title"
                            style="-fx-font-size: 11px;" />
@@ -149,13 +149,13 @@
                 </VBox>
             </VBox>
 
-            <!-- ────── Panel derecho: mapa + stats + chart ────── -->
+            
             <SplitPane orientation="VERTICAL" dividerPositions="0.60"
                        SplitPane.resizableWithParent="true">
 
-                <!-- Área del mapa -->
+                
                 <VBox>
-                    <!-- Barra de información de mapa actual -->
+                    
                     <HBox alignment="CENTER_LEFT" spacing="10"
                           style="-fx-background-color: #ecf0f1; -fx-padding: 4 10;">
                         <Label text="Mapa:" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
@@ -166,13 +166,13 @@
                                style="-fx-font-size: 10px; -fx-text-fill: #7f8c8d;" text="" />
                     </HBox>
 
-                    <!-- ScrollPane del mapa (el contenido se construye en el controlador) -->
+                    
                     <ScrollPane fx:id="mapScrollPane" VBox.vgrow="ALWAYS"
                                 pannable="true"
                                 hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED"
                                 fitToHeight="false" fitToWidth="false" />
 
-                    <!-- Placeholder cuando no hay actividad seleccionada -->
+                    
                     <Label fx:id="lblPlaceholder"
                            text="Selecciona o importa una actividad para ver la ruta en el mapa."
                            alignment="CENTER" wrapText="true"
@@ -181,14 +181,14 @@
                            maxWidth="Infinity" maxHeight="Infinity" />
                 </VBox>
 
-                <!-- Estadísticas + gráfica de desnivel -->
+                
                 <VBox style="-fx-background-color: #fafafa;">
 
-                    <!-- Estadísticas en grid -->
+                    
                     <GridPane hgap="24" vgap="2"
                               style="-fx-padding: 8 16; -fx-background-color: white;"
                               fx:id="gridStats" visible="false" managed="false">
-                        <!-- Fila 0: distancia, duración, vel media, ritmo -->
+                        
                         <VBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0">
                             <Label text="DISTANCIA" styleClass="stat-label" />
                             <Label fx:id="lblDist" text="—" styleClass="stat-value" />
@@ -205,7 +205,7 @@
                             <Label text="RITMO" styleClass="stat-label" />
                             <Label fx:id="lblRitmo" text="—" styleClass="stat-value" />
                         </VBox>
-                        <!-- Fila 1: desnivel pos, neg, alt min, alt max -->
+                        
                         <VBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1">
                             <Label text="DESNIVEL +" styleClass="stat-label" />
                             <Label fx:id="lblDesnPos" text="—" styleClass="stat-value"
@@ -228,7 +228,7 @@
                         </VBox>
                     </GridPane>
 
-                    <!-- Gráfica de altitud -->
+                    
                     <AreaChart fx:id="elevationChart" VBox.vgrow="ALWAYS"
                                animated="false" legendVisible="false"
                                visible="false" managed="false">
@@ -242,7 +242,7 @@
                         </yAxis>
                     </AreaChart>
 
-                    <!-- Placeholder stats -->
+                    
                     <Label fx:id="lblStatsPlaceholder"
                            text="Las estadísticas y el perfil de altitud se mostrarán aquí."
                            alignment="CENTER" wrapText="true"
@@ -254,7 +254,7 @@
         </SplitPane>
     </center>
 
-    <!-- ═══════════ BOTTOM: barra de estado ═══════════ -->
+    
     <bottom>
         <HBox alignment="CENTER_LEFT" spacing="20" styleClass="status-bar">
             <Label fx:id="lblEstado" styleClass="status-label"
