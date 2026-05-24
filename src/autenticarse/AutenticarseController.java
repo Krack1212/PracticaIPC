@@ -1,105 +1,70 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package autenticarse;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import javafx.event.ActionEvent;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import upv.ipc.sportlib.Session;
-import upv.ipc.sportlib.User;
+import mapademo.MapaDemo;
+import upv.ipc.sportlib.SportActivityApp;
 
 /**
+ * Controlador de la pantalla de autenticación.
  *
- * @author Usuario
+ * Valida credenciales mediante SportActivityApp y, si son correctas,
+ * carga la pantalla principal de la aplicación.
  */
-public class AutenticarseController {
+public class AutenticarseController implements Initializable {
 
-    @FXML
-    private PasswordField CampoContraseña;
-    @FXML
-    private Label errorContraseña;
-    @FXML
-    private Button autenticarseButton;
-    @FXML
-    private TextField CampoNickName;
-    @FXML
-    private Label errorNickname;
-    
-    private List<User> users = new ArrayList<>();
-    @FXML
-    private Label credencialesIncorrectas;
+    @FXML private TextField     txtNick;
+    @FXML private PasswordField txtPassword;
+    @FXML private Label         lblError;
 
+    private final SportActivityApp app = SportActivityApp.getInstance();
 
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // Ocultar error al cambiar el contenido de los campos
+        txtNick.textProperty().addListener((o, v, n) -> ocultarError());
+        txtPassword.textProperty().addListener((o, v, n) -> ocultarError());
+    }
+
+    /** Intenta autenticar con los datos introducidos. */
     @FXML
-    private void autenticarseButtonPressed(ActionEvent event) throws IOException {
-        String nickname = CampoNickName.getText();
-        String password = CampoContraseña.getText();
-      
-        if (nickname.isEmpty() || password.isEmpty()) {
-            credencialesIncorrectas.setText("Por favor, rellena todos los campos.");
+    private void login() {
+        String nick = txtNick.getText().trim();
+        String pass = txtPassword.getText();
+
+        if (nick.isEmpty() || pass.isEmpty()) {
+            mostrarError("Por favor, introduce nickname y contraseña.");
             return;
         }
-        
-        // 1. AUTENTICACIÓN OFICIAL: Le pedimos a la librería de la UPV que verifique las credenciales
-        // El método .login() busca en la base de datos SQLite y devuelve true si coinciden [cite: 20, 249]
-        boolean loginCorrecto = false;
-        try {
-            loginCorrecto = upv.ipc.sportlib.SportActivityApp.getInstance().login(nickname, password);
-        } catch (Exception e) {
-            System.out.println("Error al conectar con la base de datos: " + e.getMessage());
-        }
-        
-        // 2. COMPROBACIÓN (Fuera de cualquier bucle)
-        if (loginCorrecto){
-            //siguiente pestaña
-            FXMLLoader miCargador = new
-            FXMLLoader(getClass().getResource("/PantallaPrincipal/PantallaPrincipal.fxml"));
-            Parent root = miCargador.load();
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setTitle("Panel Principal");
-            Stage ventanaLogin = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            ventanaLogin.close();
-            //la ventana se muestra modal
-            stage.show();
-        }
-        else{
-            credencialesIncorrectas.setText("Credenciales Incorrectas!");
-        }
-    }
-    
-    @FXML
-    private void irAlRegistro(ActionEvent event) {
-        try {
-            FXMLLoader miCargador = new FXMLLoader(getClass().getResource("/mapademo/Registro.fxml"));
-            Parent root = miCargador.load();
-            
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // Usamos la misma ventana
-            
-            stage.setScene(scene);
-            stage.setTitle("Formulario de Registro");
-            stage.show();
-        } catch (IOException e) {
-            System.out.println("Error al abrir la pantalla de registro: " + e.getMessage());
+
+        boolean ok = app.login(nick, pass);
+        if (ok) {
+            MapaDemo.cargarVista("/PantallaPrincipal/PantallaPrincipal.fxml", 1200, 750, true);
+        } else {
+            mostrarError("Nickname o contraseña incorrectos.");
+            txtPassword.clear();
         }
     }
 
-    
+    /** Navega a la pantalla de registro. */
+    @FXML
+    private void irARegistro() {
+        MapaDemo.cargarVista("/mapademo/Registro.fxml", 480, 660, false);
+    }
+
+    private void mostrarError(String msg) {
+        lblError.setText(msg);
+        lblError.setVisible(true);
+        lblError.setManaged(true);
+    }
+
+    private void ocultarError() {
+        lblError.setVisible(false);
+        lblError.setManaged(false);
+    }
 }

@@ -5,16 +5,12 @@
 package mapademo;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
-import java.util.Set;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -22,141 +18,130 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import upv.ipc.sportlib.SportActivityApp;
 import upv.ipc.sportlib.User;
 
 /**
- * FXML Controller class
+ * Controlador de la pantalla de registro de nuevos usuarios.
  *
- * @author Rafols
+ * Valida los campos usando los métodos estáticos de User antes de
+ * llamar a app.registerUser().
  */
 public class RegistroController implements Initializable {
 
-    @FXML
-    private TextField CampoNickName;
-    @FXML
-    private TextField CampoCorreo;
-    @FXML
-    private PasswordField CampoContraseña;
-    @FXML
-    private DatePicker CampoFechaNacimiento;
-    @FXML
-    private ImageView ImagenAvatar;
-    @FXML
-    private Label ErrorCorreo;
-    @FXML
-    private Label ErrorContraseña;
-    @FXML
-    private Label ErrorFechaNacimiento;
-    @FXML
-    private Label ErrorNickname;
-    private Image avatarImage = null;
-    private static final Set<String> nicknames = new HashSet<>();
-    @FXML
-    private Button BotonSeleccionAvatar;
-    @FXML
-    private Button BotonRegistrarse;
-    /**
-     * Initializes the controller class.
-     */
+    @FXML private TextField   txtNick;
+    @FXML private TextField   txtEmail;
+    @FXML private PasswordField txtPassword;
+    @FXML private DatePicker  dpBirthDate;
+    @FXML private ImageView   ivAvatar;
+
+    @FXML private Label lblNickError;
+    @FXML private Label lblEmailError;
+    @FXML private Label lblPassError;
+    @FXML private Label lblFechaError;
+    @FXML private Label lblMensaje;
+
+    private final SportActivityApp app = SportActivityApp.getInstance();
+    private String avatarPath = null;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        limpiarErrores();
-    }    
+        dpBirthDate.setConverter(new javafx.util.StringConverter<LocalDate>() {
+            private final DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            @Override public String toString(LocalDate d)    { return d != null ? fmt.format(d) : ""; }
+            @Override public LocalDate fromString(String s)  { return (s != null && !s.isEmpty()) ? LocalDate.parse(s, fmt) : null; }
+        });
+    }
 
+    /** Abre FileChooser para seleccionar imagen de avatar. */
     @FXML
-    private void SeleccionarAvatar(ActionEvent event) {
-        FileChooser chooser = new FileChooser();
-        chooser.setTitle("Seleccionar avatar");
-        chooser.getExtensionFilters().add(
-            new FileChooser.ExtensionFilter(
-                "Imágenes",
-                "*.png", "*.jpg", "*.jpeg", "*.gif"
-            )
+    private void seleccionarAvatar() {
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Seleccionar avatar");
+        fc.getExtensionFilters().add(
+            new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg", "*.gif")
         );
-
-        File archivo = chooser.showOpenDialog(ImagenAvatar.getScene().getWindow());
-        
-        if (archivo != null) {
-            Image nuevaImagen = new Image(archivo.toURI().toString());
-
-            this.avatarImage = nuevaImagen;
-
-            ImagenAvatar.setImage(nuevaImagen);
-            
+        File file = fc.showOpenDialog(txtNick.getScene().getWindow());
+        if (file != null) {
+            avatarPath = file.getAbsolutePath();
+            ivAvatar.setImage(new Image(file.toURI().toString(), 52, 52, true, true));
         }
-    
     }
 
+    /** Valida todos los campos y registra el usuario si todo es correcto. */
     @FXML
-    private void Registrarse(ActionEvent event) throws IOException {
+    private void registrar() {
         limpiarErrores();
-        
-        String nickname = CampoNickName.getText().trim();
-        String correo = CampoCorreo.getText().trim();
-        String password = CampoContraseña.getText();
-        LocalDate fechaNacimiento = CampoFechaNacimiento.getValue();
-        
-        boolean datosValidos = true;
+        boolean valido = true;
 
-        if (!User.checkNickName(nickname)) {
-            ErrorNickname.setText("Solo letras, dígitos, guion o subguion.");
-            datosValidos = false; // Cambia a false, ya no se guardará nada
-        } else {
-            ErrorNickname.setText("");
+        String nick  = txtNick.getText().trim();
+        String email = txtEmail.getText().trim();
+        String pass  = txtPassword.getText();
+        LocalDate birth = dpBirthDate.getValue();
+
+        // Validar nickname
+        if (!User.checkNickName(nick)) {
+            mostrarCampoError(lblNickError, "Nickname inválido: 6-15 caracteres, solo letras, dígitos, - o _");
+            valido = false;
         }
 
-        if (!User.checkEmail(correo)) {
-            ErrorCorreo.setText("Formato válido: usuario@dominio.");
-            datosValidos = false;
-        } else {
-            ErrorCorreo.setText("");
+        // Validar email
+        if (!User.checkEmail(email)) {
+            mostrarCampoError(lblEmailError, "Email inválido: formato usuario@dominio.extensión");
+            valido = false;
         }
 
-        if (!User.checkPassword(password)) {
-            ErrorContraseña.setText("Al menos una mayúscula, minúscula, dígito y símbolo.");
-            datosValidos = false;
-        } else {
-            ErrorContraseña.setText("");
+        // Validar contraseña
+        if (!User.checkPassword(pass)) {
+            mostrarCampoError(lblPassError,
+                "Contraseña inválida: 8-20 chars, al menos una mayúscula, minúscula, dígito y símbolo (!@#$%&*()-+=)");
+            valido = false;
         }
 
-        if (fechaNacimiento == null || !User.isOlderThan(fechaNacimiento, 12)) {
-            ErrorFechaNacimiento.setText("Debes ser mayor de 12 años");
-            datosValidos = false;
-        } else {
-            ErrorFechaNacimiento.setText("");
+        // Validar fecha y edad mínima (> 12 años)
+        if (birth == null) {
+            mostrarCampoError(lblFechaError, "Debes indicar la fecha de nacimiento.");
+            valido = false;
+        } else if (!User.isOlderThan(birth, 12)) {
+            mostrarCampoError(lblFechaError, "Debes tener más de 12 años para registrarte.");
+            valido = false;
         }
-        
-        if (datosValidos) { 
-            
-            
-                // Instanciamos o llamamos al método de registro de vuestra librería oficial
-                // Nota: Pasamos el correo como email, y valores vacíos para nombre/apellidos si no los pides en la interfaz
-                upv.ipc.sportlib.SportActivityApp.getInstance().registerUser(
-                        nickname,        // String nickName
-                        correo,          // String email
-                        password,        // String password
-                        fechaNacimiento, // LocalDate birthDate
-                        (javafx.scene.image.Image) null             // Image avatar (le pasamos null provisionalmente)));
-                );
-                // REDIRECCIÓN DE VUELTA AL AUTENTICADOR
-                javafx.fxml.FXMLLoader miCargador = new javafx.fxml.FXMLLoader(getClass().getResource("/autenticarse/Autenticarse.fxml"));
-                javafx.scene.Parent root = miCargador.load();
-                
-                javafx.scene.Scene scene = new javafx.scene.Scene(root);
-                javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-                
-                stage.setScene(scene);
-                stage.setTitle("Iniciar Sesión");
-                stage.show();
+
+        if (!valido) return;
+
+        boolean ok = app.registerUser(nick, email, pass, birth, avatarPath);
+        if (ok) {
+            mostrarMensaje("¡Registro completado! Ya puedes iniciar sesión.", true);
+        } else {
+            mostrarMensaje("El nickname o el email ya están en uso. Prueba con otros.", false);
         }
     }
-    
+
+    /** Vuelve a la pantalla de login. */
+    @FXML
+    private void volverLogin() {
+        MapaDemo.cargarVista("/autenticarse/Autenticarse.fxml", 480, 560, false);
+    }
+
+    // ---- helpers ----
+
+    private void mostrarCampoError(Label lbl, String msg) {
+        lbl.setText(msg);
+        lbl.setVisible(true);
+        lbl.setManaged(true);
+    }
+
+    private void mostrarMensaje(String msg, boolean exito) {
+        lblMensaje.setText(msg);
+        lblMensaje.setStyle(exito ? "-fx-text-fill: #27ae60;" : "-fx-text-fill: #e74c3c;");
+        lblMensaje.setVisible(true);
+        lblMensaje.setManaged(true);
+    }
+
     private void limpiarErrores() {
-        ErrorNickname.setText("");
-        ErrorCorreo.setText("");
-        ErrorContraseña.setText("");
-        ErrorFechaNacimiento.setText("");
+        for (Label lbl : new Label[]{lblNickError, lblEmailError, lblPassError, lblFechaError, lblMensaje}) {
+            lbl.setVisible(false);
+            lbl.setManaged(false);
+        }
     }
 }
-    
-

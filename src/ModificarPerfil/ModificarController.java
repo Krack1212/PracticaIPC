@@ -1,193 +1,171 @@
 package ModificarPerfil;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import mapademo.MapaDemo;
 import upv.ipc.sportlib.SportActivityApp;
 import upv.ipc.sportlib.User;
 
 /**
- * FXML Controller class
+ * Controlador de la pantalla de modificación de perfil.
  *
- * @author Rafols
+ * Carga los datos actuales del usuario y los persiste tras validarlos
+ * mediante User.checkEmail(), User.checkPassword() y User.isOlderThan().
  */
 public class ModificarController implements Initializable {
 
-    // --- Componentes FXML de los Campos ---
-    @FXML private ImageView imagenAvatar;
-    @FXML private TextField campoNickname;
-    @FXML private TextField campoCorreo;
-    @FXML private PasswordField campoContraseña;
-    @FXML private DatePicker campoFechaNacimiento;
-    @FXML private Button botonCambiarFoto;
+    @FXML private TextField     txtNick;
+    @FXML private TextField     txtEmail;
+    @FXML private PasswordField txtPassword;
+    @FXML private DatePicker    dpBirthDate;
+    @FXML private ImageView     ivAvatar;
 
-    // --- Componentes FXML de los Mensajes de Error (Rojo) ---
-    @FXML private Label errorCorreo;
-    @FXML private Label errorContraseña;
-    @FXML private Label errorFechaNacimiento;
+    @FXML private Label lblEmailError;
+    @FXML private Label lblPassError;
+    @FXML private Label lblFechaError;
+    @FXML private Label lblMensaje;
 
-    /**
-     * Se ejecuta automáticamente al cargar la pantalla.
-     * Vuelca los datos del usuario autenticado en los campos de la interfaz.
-     */
+    private final SportActivityApp app = SportActivityApp.getInstance();
+    private String avatarPath;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // 1. Configurar aspecto circular estricto para el avatar
-        imagenAvatar.setFitWidth(150);
-        imagenAvatar.setFitHeight(150);
-        Circle clip = new Circle(75, 75, 75);
-        imagenAvatar.setClip(clip);
+        dpBirthDate.setConverter(new javafx.util.StringConverter<LocalDate>() {
+            private final DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            @Override public String toString(LocalDate d)   { return d != null ? fmt.format(d) : ""; }
+            @Override public LocalDate fromString(String s) { return (s != null && !s.isEmpty()) ? LocalDate.parse(s, fmt) : null; }
+        });
 
-        // 2. Limpiar textos de error residuales
-        limpiarErrores();
+        cargarDatosUsuario();
+    }
 
-        try {
-            // 3. Recuperar usuario actual desde la librería persistente
-            User usuarioActual = SportActivityApp.getInstance().getCurrentUser();
+    /** Rellena el formulario con los datos actuales del usuario. */
+    private void cargarDatosUsuario() {
+        User u = app.getCurrentUser();
+        if (u == null) return;
 
-            if (usuarioActual != null) {
-                campoNickname.setText(usuarioActual.getNickName());
-                campoCorreo.setText(usuarioActual.getEmail());
-                campoContraseña.setText(usuarioActual.getPassword());
-                campoFechaNacimiento.setValue(usuarioActual.getBirthDate());
+        txtNick.setText(u.getNickName());
+        txtEmail.setText(u.getEmail() != null ? u.getEmail() : "");
+        dpBirthDate.setValue(u.getBirthDate());
+        avatarPath = u.getAvatarPath();
 
-                if (usuarioActual.getAvatar() != null) {
-                    imagenAvatar.setImage(usuarioActual.getAvatar());
-                }
-            } else {
-                System.out.println("Error: No hay ningún usuario autenticado en el sistema.");
+        if (avatarPath != null) {
+            File f = new File(avatarPath);
+            if (f.exists()) {
+                ivAvatar.setImage(new Image(f.toURI().toString(), 60, 60, true, true));
             }
-        } catch (Exception e) {
-            System.out.println("Error al cargar los datos del usuario: " + e.getMessage());
         }
     }
 
-    /**
-     * Gestión del explorador de archivos para actualizar la imagen de perfil.
-     */
+    /** Abre selector de imagen para el avatar. */
     @FXML
-    private void cambiarFotoPressed(ActionEvent event) {
-        FileChooser selectorFicheros = new FileChooser();
-        selectorFicheros.setTitle("Selecciona tu nuevo avatar");
-        selectorFicheros.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg", "*.bmp")
+    private void seleccionarAvatar() {
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Seleccionar avatar");
+        fc.getExtensionFilters().add(
+            new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg", "*.gif")
         );
-
-        Stage ventanaActual = (Stage) imagenAvatar.getScene().getWindow();
-        File archivoSeleccionado = selectorFicheros.showOpenDialog(ventanaActual);
-
-        if (archivoSeleccionado != null) {
-            Image nuevoAvatar = new Image(archivoSeleccionado.toURI().toString());
-            imagenAvatar.setImage(nuevoAvatar);
+        File file = fc.showOpenDialog(txtNick.getScene().getWindow());
+        if (file != null) {
+            avatarPath = file.getAbsolutePath();
+            ivAvatar.setImage(new Image(file.toURI().toString(), 60, 60, true, true));
         }
     }
 
-    /**
-     * Recoge los valores modificados, los valida dinámicamente y los persiste en la BD.
-     */
+    /** Elimina el avatar actual. */
     @FXML
-    private void guardarPressed(ActionEvent event) throws IOException {
-        // 1. Limpiar la interfaz de errores antiguos
+    private void quitarAvatar() {
+        avatarPath = null;
+        ivAvatar.setImage(null);
+    }
+
+    /** Valida y guarda los cambios del perfil. */
+    @FXML
+    private void guardar() {
         limpiarErrores();
+        boolean valido = true;
 
-        // 2. Extraer cadenas de texto nativas
-        String correo = campoCorreo.getText().trim();
-        String password = campoContraseña.getText();
-        LocalDate fechaNacimiento = campoFechaNacimiento.getValue();
-        Image avatar = imagenAvatar.getImage();
+        String email = txtEmail.getText().trim();
+        String pass  = txtPassword.getText();
+        LocalDate birth = dpBirthDate.getValue();
 
-        boolean datosValidos = true;
-
-        // --- VALIDACIONES CON LA LIBRERÍA DE LA UPV ---
-        if (!User.checkEmail(correo)) {
-            errorCorreo.setText("Formato válido obligatorio: usuario@dominio.");
-            datosValidos = false;
+        if (!User.checkEmail(email)) {
+            mostrarCampoError(lblEmailError, "Email inválido: formato usuario@dominio.extensión");
+            valido = false;
         }
 
-        if (!User.checkPassword(password)) {
-            errorContraseña.setText("Al menos una mayúscula, minúscula, dígito y símbolo.");
-            datosValidos = false;
+        // Contraseña vacía → conservar la actual; si hay texto → validar
+        if (!pass.isEmpty() && !User.checkPassword(pass)) {
+            mostrarCampoError(lblPassError,
+                "Contraseña inválida: 8-20 chars, mayúscula, minúscula, dígito y símbolo");
+            valido = false;
         }
 
-        if (fechaNacimiento == null || !User.isOlderThan(fechaNacimiento, 12)) {
-            errorFechaNacimiento.setText("Debes ser mayor de 12 años para usar la aplicación.");
-            datosValidos = false;
+        if (birth == null) {
+            mostrarCampoError(lblFechaError, "Debes indicar la fecha de nacimiento.");
+            valido = false;
+        } else if (!User.isOlderThan(birth, 12)) {
+            mostrarCampoError(lblFechaError, "Debes tener más de 12 años.");
+            valido = false;
         }
 
-        // --- PERSISTENCIA Y REDIRECCIÓN ---
-        if (datosValidos) {
-            try {
-                // Guardar los datos en el sistema
-                SportActivityApp.getInstance().updateCurrentUser(correo, password, fechaNacimiento, avatar);
+        if (!valido) return;
 
-                // Notificar al usuario con un diálogo modal
-                Alert exito = new Alert(AlertType.INFORMATION);
-                exito.setTitle("Perfil Actualizado");
-                exito.setHeaderText(null);
-                exito.setContentText("¡Los cambios se han guardado con éxito en la base de datos!");
-                exito.showAndWait();
+        // Si el campo contraseña está vacío, conservar la contraseña actual
+        String passToSave = pass.isEmpty() ? app.getCurrentUser().getPassword() : pass;
 
-                // Redirección segura de vuelta al Panel Principal solo si todo salió bien
-                FXMLLoader miCargador = new FXMLLoader(getClass().getResource("/PantallaPrincipal/PantallaPrincipal.fxml"));
-                Parent root = miCargador.load();
-                Scene scene = new Scene(root);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                
-                stage.setScene(scene);
-                stage.setTitle("Panel Principal");
-                stage.show();
-
-            } catch (Exception e) {
-                System.out.println("Error al escribir en la base de datos: " + e.getMessage());
-            }
+        boolean ok = app.updateCurrentUser(email, passToSave, birth, avatarPath);
+        if (ok) {
+            mostrarMensaje("Perfil actualizado correctamente.", true);
+        } else {
+            mostrarMensaje("Error al guardar los cambios. Inténtalo de nuevo.", false);
         }
     }
 
-    /**
-     * Cancela la edición actual y cierra la ventana volviendo al Panel Principal.
-     */
+    /** Vuelve a la pantalla principal sin guardar cambios. */
     @FXML
-    private void cancelarPressed(ActionEvent event) throws IOException {
-        FXMLLoader miCargador = new FXMLLoader(getClass().getResource("/PantallaPrincipal/PantallaPrincipal.fxml"));
-        Parent root = miCargador.load();
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Panel Principal");
-        
-        Stage ventanaLogin = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        ventanaLogin.close();
-        
-        stage.show();
+    private void cancelar() {
+        // Si se abre como Stage separado, cerrar; si está embebida, volver al main
+        try {
+            Stage stage = (Stage) txtNick.getScene().getWindow();
+            stage.close();
+        } catch (Exception e) {
+            MapaDemo.cargarVista("/PantallaPrincipal/PantallaPrincipal.fxml", 1200, 750, true);
+        }
     }
 
-    /**
-     * Resetea el contenido de los textos de error.
-     */
+    // ---- helpers ----
+
+    private void mostrarCampoError(Label lbl, String msg) {
+        lbl.setText(msg);
+        lbl.setVisible(true);
+        lbl.setManaged(true);
+    }
+
+    private void mostrarMensaje(String msg, boolean exito) {
+        lblMensaje.setText(msg);
+        lblMensaje.setStyle(exito ? "-fx-text-fill: #27ae60;" : "-fx-text-fill: #e74c3c;");
+        lblMensaje.setVisible(true);
+        lblMensaje.setManaged(true);
+    }
+
     private void limpiarErrores() {
-        if (errorCorreo != null) errorCorreo.setText("");
-        if (errorContraseña != null) errorContraseña.setText("");
-        if (errorFechaNacimiento != null) errorFechaNacimiento.setText("");
+        for (Label lbl : new Label[]{lblEmailError, lblPassError, lblFechaError, lblMensaje}) {
+            lbl.setVisible(false);
+            lbl.setManaged(false);
+        }
     }
 }

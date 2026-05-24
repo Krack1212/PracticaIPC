@@ -3,162 +3,90 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="440.0" stylesheets="@../Style/Registro.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapademo.RegistroController">
-   <children>
-      <Label prefHeight="71.0" prefWidth="664.0" style="-fx-background-color: #0685BC; -fx-text-fill: white;" text="Registro">
-         <padding>
-            <Insets left="20.0" />
-         </padding>
-         <font>
-            <Font name="Arial Rounded MT Bold" size="38.0" />
-         </font>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </Label>
-      <GridPane prefHeight="386.0" prefWidth="440.0">
-        <columnConstraints>
-          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="346.3999725341797" minWidth="10.0" prefWidth="148.8" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="457.6000213623047" minWidth="10.0" prefWidth="276.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="90.39999618530274" minHeight="10.0" prefHeight="67.19998397827149" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="110.19998779296876" minHeight="10.0" prefHeight="52.0000160217285" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="131.60000000000002" minHeight="10.0" prefHeight="71.20001831054688" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="55.199987792968756" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="114.40003662109376" minHeight="10.0" prefHeight="63.200030517578114" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="102.99998168945314" minHeight="10.0" prefHeight="95.79996948242189" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Label alignment="CENTER_RIGHT" text="Nickname:" textFill="#025477">
-               <padding>
-                  <Insets right="15.0" />
-               </padding>
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label text="Correo Electrónico:" textFill="#025477" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets right="15.0" />
-               </GridPane.margin>
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label text="Contraseña:" textFill="#025477" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets right="15.0" />
-               </GridPane.margin>
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label text="Fecha de Nacimiento:" textFill="#025477" GridPane.rowIndex="4">
-               <GridPane.margin>
-                  <Insets right="15.0" />
-               </GridPane.margin>
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-            <VBox alignment="CENTER_LEFT" prefHeight="54.0" prefWidth="284.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <children>
-                  <TextField fx:id="CampoCorreo" prefHeight="26.0" prefWidth="220.0" promptText="youremail@domain.com">
-                     <VBox.margin>
-                        <Insets right="50.0" top="20.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Label fx:id="ErrorCorreo" textFill="RED" />
-               </children>
+<ScrollPane fitToWidth="true"
+            style="-fx-background-color: #f0f4f8;"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="mapademo.RegistroController">
+
+    <VBox alignment="CENTER" spacing="15"
+          style="-fx-background-color: #f0f4f8; -fx-padding: 40;">
+        <children>
+
+            <!-- Logo -->
+            <ImageView fitHeight="60" fitWidth="60" preserveRatio="true">
+                <image><Image url="@../resources/logo.png" /></image>
+            </ImageView>
+
+            <Label text="Crear cuenta" styleClass="title-label" />
+            <Label text="* Campos obligatorios" styleClass="subtitle-label" />
+
+            <!-- Formulario de registro -->
+            <VBox spacing="6" maxWidth="400" styleClass="card">
+
+                <!-- Nickname -->
+                <Label text="Nickname *" styleClass="section-title" />
+                <TextField fx:id="txtNick"
+                           promptText="6-15 caracteres: letras, dígitos, -, _" />
+                <Label fx:id="lblNickError" styleClass="error-label"
+                       visible="false" managed="false" wrapText="true" />
+
+                <!-- Email -->
+                <Label text="Correo electrónico *" styleClass="section-title" />
+                <TextField fx:id="txtEmail" promptText="usuario@dominio.com" />
+                <Label fx:id="lblEmailError" styleClass="error-label"
+                       visible="false" managed="false" wrapText="true" />
+
+                <!-- Contraseña -->
+                <Label text="Contraseña *" styleClass="section-title" />
+                <PasswordField fx:id="txtPassword"
+                               promptText="8-20 chars, mayúscula, minúscula, dígito, símbolo" />
+                <Label fx:id="lblPassError" styleClass="error-label"
+                       visible="false" managed="false" wrapText="true" />
+
+                <!-- Fecha de nacimiento -->
+                <Label text="Fecha de nacimiento *" styleClass="section-title" />
+                <DatePicker fx:id="dpBirthDate" maxWidth="Infinity"
+                            promptText="dd/MM/yyyy" />
+                <Label fx:id="lblFechaError" styleClass="error-label"
+                       visible="false" managed="false" wrapText="true" />
+
+                <!-- Avatar (opcional) -->
+                <Label text="Avatar (opcional)" styleClass="section-title" />
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <ImageView fx:id="ivAvatar" fitWidth="52" fitHeight="52"
+                               preserveRatio="true"
+                               style="-fx-border-color: #bdc3c7; -fx-border-radius: 4;" />
+                    <Button text="Seleccionar imagen..."
+                            onAction="#seleccionarAvatar" styleClass="btn-secondary" />
+                </HBox>
+
+                <!-- Mensaje global -->
+                <Label fx:id="lblMensaje" wrapText="true"
+                       visible="false" managed="false">
+                    <VBox.margin><Insets top="4"/></VBox.margin>
+                </Label>
+
+                <!-- Botón registrar -->
+                <Button text="Registrarse" onAction="#registrar"
+                        maxWidth="Infinity" styleClass="btn-success">
+                    <VBox.margin><Insets top="6"/></VBox.margin>
+                </Button>
+
+                <Hyperlink text="← Volver al inicio de sesión"
+                           onAction="#volverLogin" />
+
             </VBox>
-            <VBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="284.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <children>
-                  <PasswordField fx:id="CampoContraseña" prefHeight="26.0" prefWidth="199.0" promptText="mayúscula, número y símbolo">
-                     <font>
-                        <Font size="11.7" />
-                     </font>
-                     <VBox.margin>
-                        <Insets right="80.0" top="20.0" />
-                     </VBox.margin>
-                  </PasswordField>
-                  <Label fx:id="ErrorContraseña" textFill="RED" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="284.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-               <children>
-                  <DatePicker fx:id="CampoFechaNacimiento" prefHeight="30.0" prefWidth="128.0" promptText="dd/mm/aaaa">
-                     <VBox.margin>
-                        <Insets top="20.0" />
-                     </VBox.margin>
-                  </DatePicker>
-                  <Label fx:id="ErrorFechaNacimiento" textFill="RED" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="284.0" GridPane.columnIndex="1">
-               <children>
-                  <TextField fx:id="CampoNickName" prefHeight="26.0" prefWidth="413.0" promptText="Entre 6 y 15 caracteres">
-                     <VBox.margin>
-                        <Insets right="80.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Label fx:id="ErrorNickname" textFill="RED" />
-               </children>
-               <GridPane.margin>
-                  <Insets top="22.0" />
-               </GridPane.margin>
-            </VBox>
-            <VBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="284.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-               <children>
-                  <ImageView id="ImagenAvatar" fx:id="ImagenAvatar" fitHeight="96.0" fitWidth="106.0" pickOnBounds="true" preserveRatio="true">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </ImageView>
-               </children>
-            </VBox>
-            <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.rowIndex="5">
-               <children>
-                  <Label text="Avatar (Opcional)" textFill="#025477">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="BotonSeleccionAvatar" mnemonicParsing="false" onAction="#SeleccionarAvatar" prefHeight="26.0" prefWidth="102.0" text="Seleccionar" textAlignment="CENTER" />
-               </children>
-               <GridPane.margin>
-                  <Insets right="15.0" />
-               </GridPane.margin>
-            </VBox>
-         </children>
-      </GridPane>
-      <HBox alignment="CENTER_RIGHT" prefHeight="63.0" prefWidth="425.0">
-         <children>
-            <Button fx:id="BotonRegistrarse" mnemonicParsing="false" onAction="#Registrarse" prefHeight="25.0" prefWidth="94.0" style="-fx-background-color: #0685BC; -fx-text-fill: white; -fx-font-weight: bold;" text="Registrarse">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="30.0" />
-               </HBox.margin>
-            </Button>
-         </children>
-         <VBox.margin>
-            <Insets bottom="15.0" />
-         </VBox.margin>
-      </HBox>
-   </children>
-</VBox>
+        </children>
+    </VBox>
+</ScrollPane>

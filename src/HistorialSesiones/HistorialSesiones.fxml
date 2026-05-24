@@ -3,49 +3,68 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HistorialController">
-   
-   <!-- Cabecera de la ventana -->
-   <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Historial de Búsqueda">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <!-- Este HBox invisible empuja el botón de borrar hacia la derecha extrema -->
-            <HBox HBox.hgrow="ALWAYS" />
-         </children>
-         <padding>
-            <Insets left="20.0" right="20.0" />
-         </padding>
-      </HBox>
-   </top>
-   
-   <!-- Contenedor del Historial -->
-   <center>
-      <ListView fx:id="listViewHistorial" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets left="20.0" right="20.0" />
-         </BorderPane.margin>
-      </ListView>
-   </center>
-   
-   <!-- Pie de página / Acciones inferiores -->
-   <bottom>
-      <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#onVolverClick" prefHeight="30.0" prefWidth="80.0" text="Volver" />
-         </children>
-         <padding>
-            <Insets left="20.0" right="20.0" />
-         </padding>
-      </HBox>
-   </bottom>
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="HistorialSesiones.HistorialController"
+            style="-fx-background-color: #f0f4f8;">
+
+    <!-- Cabecera -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12"
+              style="-fx-background-color: #2c3e50; -fx-padding: 12 16;">
+            <Label text="Historial de sesiones" styleClass="sidebar-title"
+                   style="-fx-font-size: 16px;" />
+        </HBox>
+    </top>
+
+    <!-- Tabla de sesiones -->
+    <center>
+        <VBox spacing="10" style="-fx-padding: 16;">
+            <TableView fx:id="tablaSesiones" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colInicio"    text="Inicio"               prefWidth="160" />
+                    <TableColumn fx:id="colFin"       text="Fin"                  prefWidth="160" />
+                    <TableColumn fx:id="colDuracion"  text="Duración"             prefWidth="100" />
+                    <TableColumn fx:id="colImport"    text="Activ. importadas"    prefWidth="120" />
+                    <TableColumn fx:id="colVistas"    text="Activ. vistas"        prefWidth="100" />
+                    <TableColumn fx:id="colAnotac"    text="Anotaciones"          prefWidth="100" />
+                </columns>
+            </TableView>
+
+            <!-- Totales acumulados -->
+            <HBox spacing="30" alignment="CENTER"
+                  style="-fx-padding: 8 12; -fx-background-color: #dfe6e9; -fx-background-radius: 6;">
+                <VBox alignment="CENTER">
+                    <Label text="TOTAL SESIONES" styleClass="stat-label" />
+                    <Label fx:id="lblTotalSesiones" styleClass="stat-value" text="0" />
+                </VBox>
+                <VBox alignment="CENTER">
+                    <Label text="TOTAL IMPORTADAS" styleClass="stat-label" />
+                    <Label fx:id="lblTotalImport" styleClass="stat-value" text="0" />
+                </VBox>
+                <VBox alignment="CENTER">
+                    <Label text="TOTAL VISTAS" styleClass="stat-label" />
+                    <Label fx:id="lblTotalVistas" styleClass="stat-value" text="0" />
+                </VBox>
+                <VBox alignment="CENTER">
+                    <Label text="TOTAL ANOTACIONES" styleClass="stat-label" />
+                    <Label fx:id="lblTotalAnotac" styleClass="stat-value" text="0" />
+                </VBox>
+            </HBox>
+        </VBox>
+    </center>
+
+    <!-- Botón cerrar -->
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 8 16;">
+            <Button text="Cerrar" onAction="#cerrar" styleClass="btn-secondary" />
+        </HBox>
+    </bottom>
+
 </BorderPane>

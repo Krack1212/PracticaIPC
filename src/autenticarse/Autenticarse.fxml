@@ -5,142 +5,58 @@
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="autenticarse.AutenticarseController">
-   <children>
-      <Label prefHeight="90.0" prefWidth="440.0" style="-fx-background-color: #0685BC; -fx-text-fill: white;" text="Autenticarse">
-         <padding>
-            <Insets left="20.0" />
-         </padding>
-         <font>
-            <Font name="Arial Rounded MT Bold" size="38.0" />
-         </font>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </Label>
-      
-      <GridPane prefHeight="220.0" prefWidth="440.0">
-        <columnConstraints>
-          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="346.3999725341797" minWidth="10.0" prefWidth="148.8" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="457.6000213623047" minWidth="10.0" prefWidth="276.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="161.4" minHeight="10.0" prefHeight="85.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="228.66666666666669" minHeight="0.0" prefHeight="80.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="228.0" minHeight="0.0" prefHeight="55.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            
-            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label alignment="BOTTOM_LEFT" text="Nickname:" textFill="#025477">
-                     <padding>
-                        <Insets right="15.0" />
-                     </padding>
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </Label>
-               </children>
-               <GridPane.margin>
-                  <Insets bottom="10.0" />
-               </GridPane.margin>
+<VBox alignment="CENTER" spacing="20"
+      style="-fx-background-color: #f0f4f8; -fx-padding: 40;"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="autenticarse.AutenticarseController">
+
+    <children>
+
+        <!-- Logo -->
+        <ImageView fitHeight="80" fitWidth="80" preserveRatio="true">
+            <image><Image url="@../resources/logo.png" /></image>
+        </ImageView>
+
+        <!-- Títulos -->
+        <Label text="Running la Safor" styleClass="title-label" />
+        <Label text="Interfaces Persona-Computador — IPC 2026" styleClass="subtitle-label" />
+
+        <!-- Tarjeta de login -->
+        <VBox spacing="10" maxWidth="360" styleClass="card">
+
+            <Label text="Iniciar sesión" style="-fx-font-size: 17px; -fx-font-weight: bold;" />
+
+            <Label text="Nickname:" />
+            <TextField fx:id="txtNick" promptText="Introduce tu nickname" />
+
+            <Label text="Contraseña:" />
+            <PasswordField fx:id="txtPassword" promptText="Introduce tu contraseña" />
+
+            <!-- Mensaje de error (oculto hasta que se necesite) -->
+            <Label fx:id="lblError" styleClass="error-label"
+                   visible="false" managed="false" wrapText="true" />
+
+            <Button text="Iniciar sesión" onAction="#login"
+                    maxWidth="Infinity" styleClass="btn-primary">
+                <VBox.margin><Insets top="6"/></VBox.margin>
+            </Button>
+
+            <Separator />
+
+            <HBox alignment="CENTER" spacing="4">
+                <Label text="¿No tienes cuenta?" />
+                <Hyperlink text="Regístrate" onAction="#irARegistro" />
             </HBox>
-            
-            <VBox alignment="BOTTOM_LEFT" prefHeight="32.0" prefWidth="284.0" GridPane.columnIndex="1">
-               <children>
-                  <TextField fx:id="CampoNickName" prefHeight="26.0" prefWidth="413.0" promptText="Entre 6 y 15 caracteres">
-                     <VBox.margin>
-                        <Insets right="80.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Label fx:id="errorNickname" prefHeight="17.0" prefWidth="203.0" textFill="RED">
-                     <font>
-                        <Font size="11.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="2.0" />
-                     </VBox.margin>
-                  </Label>
-               </children>
-               <GridPane.margin>
-                  <Insets top="10.0" />
-               </GridPane.margin>
-               <padding>
-                  <Insets bottom="4.0" />
-               </padding>
-            </VBox>
-            
-            <Label text="Contraseña:" textFill="#025477" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets right="15.0" bottom="15.0" />
-               </GridPane.margin>
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            
-            <VBox alignment="CENTER_LEFT" prefHeight="72.0" prefWidth="284.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <children>
-                  <PasswordField fx:id="CampoContraseña" prefHeight="26.0" prefWidth="213.0" promptText="mayúscula, número y símbolo">
-                     <font>
-                        <Font size="11.7" />
-                     </font>
-                     <VBox.margin>
-                        <Insets right="80.0" top="10.0" />
-                     </VBox.margin>
-                  </PasswordField>
-                  <Label fx:id="errorContraseña" prefHeight="17.0" prefWidth="201.0" textFill="RED">
-                     <font>
-                        <Font size="11.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="2.0" />
-                     </VBox.margin>
-                  </Label>
-               </children>
-            </VBox>
-            
-            <VBox alignment="CENTER_LEFT" prefHeight="52.0" prefWidth="284.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <children>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="53.0" prefWidth="283.0">
-                     <children>
-                        <Button fx:id="autenticarseButton" mnemonicParsing="false" onAction="#autenticarseButtonPressed" prefHeight="40.0" prefWidth="115.0" style="-fx-background-color: #0685BC; -fx-text-fill: white; -fx-font-weight: bold;" text="Autenticarse">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets right="30.0" top="5.0" />
-                           </HBox.margin>
-                        </Button>
-                     </children>
-                  </HBox>
-                  <Label fx:id="credencialesIncorrectas" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="245.0" textAlignment="RIGHT" textFill="RED">
-                     <font>
-                        <Font size="11.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets right="30.0" top="2.0" />
-                     </VBox.margin>
-                  </Label>
-               </children>
-            </VBox>
-            
-         </children>
-      </GridPane>
-      
-      <HBox alignment="CENTER" prefHeight="56.0" prefWidth="440.0">
-         <children>
-            <Hyperlink onAction="#irAlRegistro" text="¿No tienes cuenta? Regístrate aquí" />
-         </children>
-      </HBox>
-   </children>
+
+        </VBox>
+
+    </children>
 </VBox>

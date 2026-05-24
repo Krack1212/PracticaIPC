@@ -1,93 +1,267 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="PantallaPrincipal.PantallaPrincipalController">
-   <center>
-      <VBox prefHeight="556.0" prefWidth="853.0" stylesheets="@../resources/estilos.css">
-         <children>
-            <SplitPane fx:id="splitPane" dividerPositions="0.19699727024567792" VBox.vgrow="ALWAYS">
-               <items>
-                  <ListView fx:id="map_listview" onMouseClicked="#listClicked" prefHeight="399.0" prefWidth="87.0" />
-                  <ScrollPane fx:id="map_scrollpane" hbarPolicy="ALWAYS" onMouseMoved="#showPosition" pannable="true" prefHeight="398.0" prefWidth="358.0" vbarPolicy="ALWAYS">
-                     <content>
-                        <Pane>
-                           <children>
-                              <ImageView pickOnBounds="true">
-                                 <image>
-                                    <Image url="@../resources/upv.jpg" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </Pane>
-                     </content>
-                  </ScrollPane>
-               </items>
-            </SplitPane>
-         </children>
-      </VBox>
-   </center>
-   <top>
-      <HBox alignment="CENTER_RIGHT" fillHeight="false" spacing="5.0" BorderPane.alignment="CENTER">
-         <children>
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="PantallaPrincipal.PantallaPrincipalController">
+
+    <!-- ═══════════ TOP: MenuBar + barra de usuario ═══════════ -->
+    <top>
+        <VBox>
+            <!-- Menú principal -->
             <MenuBar>
-              <menus>
-                <Menu mnemonicParsing="false" text="Usuario">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#ModificarPerfil" text="Modificar Perfil" />
-                        <MenuItem mnemonicParsing="false" text="Historial de Sesiones" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Cerrar Sesión" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Mapas">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Registrar Actividad Nueva" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Ayuda">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#atencionALCliente" text="Atención al cliente" />
-                  </items>
-                </Menu>
-              </menus>
+                <menus>
+                    <!-- Menú Actividades -->
+                    <Menu text="Actividades">
+                        <items>
+                            <MenuItem text="Importar GPX..."   onAction="#importarActividad" accelerator="CTRL+I" />
+                            <SeparatorMenuItem />
+                            <MenuItem text="Eliminar actividad seleccionada" onAction="#eliminarActividad" />
+                            <SeparatorMenuItem />
+                            <MenuItem fx:id="miVerVelocidad" text="Ver velocidad en ruta" onAction="#toggleVelocidad" />
+                        </items>
+                    </Menu>
+
+                    <!-- Menú Usuario -->
+                    <Menu text="Usuario">
+                        <items>
+                            <MenuItem text="Modificar perfil..."      onAction="#abrirModificarPerfil" />
+                            <MenuItem text="Historial de sesiones..." onAction="#abrirHistorial" />
+                            <SeparatorMenuItem />
+                            <MenuItem text="Cerrar sesión"            onAction="#cerrarSesion" />
+                        </items>
+                    </Menu>
+
+                    <!-- Menú Mapas -->
+                    <Menu text="Mapas">
+                        <items>
+                            <MenuItem text="Añadir mapa..."   onAction="#anadirMapa" />
+                            <MenuItem text="Gestionar mapas..." onAction="#gestionarMapas" />
+                        </items>
+                    </Menu>
+
+                    <!-- Menú Ayuda -->
+                    <Menu text="Ayuda">
+                        <items>
+                            <MenuItem text="Acerca de..." onAction="#acercaDe" />
+                        </items>
+                    </Menu>
+                </menus>
             </MenuBar>
+
+            <!-- Barra de usuario + controles de zoom -->
+            <HBox alignment="CENTER_LEFT" spacing="10"
+                  style="-fx-background-color: #34495e; -fx-padding: 8 14;">
+                <ImageView fx:id="ivUserAvatar" fitWidth="34" fitHeight="34"
+                           preserveRatio="true"
+                           style="-fx-border-color: #ecf0f1; -fx-border-radius: 17;" />
+                <Label fx:id="lblBienvenido" styleClass="sidebar-label"
+                       style="-fx-font-size: 13px;" text="Bienvenido" />
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Label text="Zoom" style="-fx-text-fill: white;" />
+                <Button text="−" onAction="#zoomOut"
+                        style="-fx-background-color: #2c3e50; -fx-text-fill: white; -fx-font-size: 14;" />
+                <Slider fx:id="zoomSlider" min="0.3" max="3.0" value="1.0"
+                        prefWidth="120" />
+                <Button text="+" onAction="#zoomIn"
+                        style="-fx-background-color: #2c3e50; -fx-text-fill: white; -fx-font-size: 14;" />
+                <Button text="Restablecer" onAction="#zoomReset"
+                        style="-fx-background-color: #2c3e50; -fx-text-fill: white;" />
+
+                <Separator orientation="VERTICAL" />
+
+                <CheckBox fx:id="chkVelocidad" text="Ver velocidad"
+                          style="-fx-text-fill: white;"
+                          onAction="#toggleVelocidad" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- ═══════════ CENTER: Panel actividades + Mapa + Stats ═══════════ -->
+    <center>
+        <SplitPane dividerPositions="0.22">
+
+            <!-- ────── Panel izquierdo: lista de actividades ────── -->
+            <VBox minWidth="180" style="-fx-background-color: #2c3e50;">
+
+                <!-- Título y botones -->
+                <HBox alignment="CENTER" spacing="6"
+                      style="-fx-padding: 10 8; -fx-background-color: #1a252f;">
+                    <Label text="MIS ACTIVIDADES" styleClass="sidebar-title" />
+                </HBox>
+                <HBox alignment="CENTER" spacing="6" style="-fx-padding: 6 8;">
+                    <Button text="+ Importar" onAction="#importarActividad"
+                            style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-size: 11; -fx-padding: 5 10;"
+                            maxWidth="Infinity" HBox.hgrow="ALWAYS" />
+                    <Button text="Eliminar" onAction="#eliminarActividad"
+                            style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 11; -fx-padding: 5 10;"
+                            maxWidth="Infinity" HBox.hgrow="ALWAYS" />
+                </HBox>
+
+                <!-- Lista de actividades -->
+                <ListView fx:id="listActividades" VBox.vgrow="ALWAYS"
+                          style="-fx-background-color: #2c3e50; -fx-border-color: transparent;" />
+
+                <!-- Acumulado del mes -->
+                <VBox style="-fx-background-color: #1a252f; -fx-padding: 10 8;" spacing="4">
+                    <Label text="RESUMEN MES" styleClass="sidebar-title"
+                           style="-fx-font-size: 11px;" />
+                    <HBox spacing="6">
+                        <Label text="Dist.:" styleClass="sidebar-label" />
+                        <Label fx:id="lblAcumDist" text="—"
+                               style="-fx-text-fill: #3498db; -fx-font-weight: bold;" />
+                    </HBox>
+                    <HBox spacing="6">
+                        <Label text="Tiempo:" styleClass="sidebar-label" />
+                        <Label fx:id="lblAcumTiempo" text="—"
+                               style="-fx-text-fill: #3498db; -fx-font-weight: bold;" />
+                    </HBox>
+                    <HBox spacing="6">
+                        <Label text="D+ / D−:" styleClass="sidebar-label" />
+                        <Label fx:id="lblAcumDesn" text="—"
+                               style="-fx-text-fill: #3498db; -fx-font-weight: bold;" />
+                    </HBox>
+                </VBox>
+            </VBox>
+
+            <!-- ────── Panel derecho: mapa + stats + chart ────── -->
+            <SplitPane orientation="VERTICAL" dividerPositions="0.60"
+                       SplitPane.resizableWithParent="true">
+
+                <!-- Área del mapa -->
+                <VBox>
+                    <!-- Barra de información de mapa actual -->
+                    <HBox alignment="CENTER_LEFT" spacing="10"
+                          style="-fx-background-color: #ecf0f1; -fx-padding: 4 10;">
+                        <Label text="Mapa:" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d;" />
+                        <Label fx:id="lblMapaActual" text="—"
+                               style="-fx-font-size: 11px; -fx-font-weight: bold;" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="lblMouseCoords"
+                               style="-fx-font-size: 10px; -fx-text-fill: #7f8c8d;" text="" />
+                    </HBox>
+
+                    <!-- ScrollPane del mapa (el contenido se construye en el controlador) -->
+                    <ScrollPane fx:id="mapScrollPane" VBox.vgrow="ALWAYS"
+                                pannable="true"
+                                hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED"
+                                fitToHeight="false" fitToWidth="false" />
+
+                    <!-- Placeholder cuando no hay actividad seleccionada -->
+                    <Label fx:id="lblPlaceholder"
+                           text="Selecciona o importa una actividad para ver la ruta en el mapa."
+                           alignment="CENTER" wrapText="true"
+                           style="-fx-text-fill: #95a5a6; -fx-font-size: 14px; -fx-padding: 40;"
+                           VBox.vgrow="ALWAYS"
+                           maxWidth="Infinity" maxHeight="Infinity" />
+                </VBox>
+
+                <!-- Estadísticas + gráfica de desnivel -->
+                <VBox style="-fx-background-color: #fafafa;">
+
+                    <!-- Estadísticas en grid -->
+                    <GridPane hgap="24" vgap="2"
+                              style="-fx-padding: 8 16; -fx-background-color: white;"
+                              fx:id="gridStats" visible="false" managed="false">
+                        <!-- Fila 0: distancia, duración, vel media, ritmo -->
+                        <VBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label text="DISTANCIA" styleClass="stat-label" />
+                            <Label fx:id="lblDist" text="—" styleClass="stat-value" />
+                        </VBox>
+                        <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label text="DURACIÓN" styleClass="stat-label" />
+                            <Label fx:id="lblDuracion" text="—" styleClass="stat-value" />
+                        </VBox>
+                        <VBox alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                            <Label text="VEL. MEDIA" styleClass="stat-label" />
+                            <Label fx:id="lblVelMedia" text="—" styleClass="stat-value" />
+                        </VBox>
+                        <VBox alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                            <Label text="RITMO" styleClass="stat-label" />
+                            <Label fx:id="lblRitmo" text="—" styleClass="stat-value" />
+                        </VBox>
+                        <!-- Fila 1: desnivel pos, neg, alt min, alt max -->
+                        <VBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <Label text="DESNIVEL +" styleClass="stat-label" />
+                            <Label fx:id="lblDesnPos" text="—" styleClass="stat-value"
+                                   style="-fx-text-fill: #27ae60;" />
+                        </VBox>
+                        <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Label text="DESNIVEL −" styleClass="stat-label" />
+                            <Label fx:id="lblDesnNeg" text="—" styleClass="stat-value"
+                                   style="-fx-text-fill: #e74c3c;" />
+                        </VBox>
+                        <VBox alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                            <Label text="ALT. MIN" styleClass="stat-label" />
+                            <Label fx:id="lblAltMin" text="—" styleClass="stat-value"
+                                   style="-fx-text-fill: #8e44ad;" />
+                        </VBox>
+                        <VBox alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                            <Label text="ALT. MAX" styleClass="stat-label" />
+                            <Label fx:id="lblAltMax" text="—" styleClass="stat-value"
+                                   style="-fx-text-fill: #8e44ad;" />
+                        </VBox>
+                    </GridPane>
+
+                    <!-- Gráfica de altitud -->
+                    <AreaChart fx:id="elevationChart" VBox.vgrow="ALWAYS"
+                               animated="false" legendVisible="false"
+                               visible="false" managed="false">
+                        <xAxis>
+                            <NumberAxis fx:id="chartXAxis" label="Distancia (km)"
+                                        autoRanging="true" />
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis fx:id="chartYAxis" label="Altitud (m)"
+                                        autoRanging="true" />
+                        </yAxis>
+                    </AreaChart>
+
+                    <!-- Placeholder stats -->
+                    <Label fx:id="lblStatsPlaceholder"
+                           text="Las estadísticas y el perfil de altitud se mostrarán aquí."
+                           alignment="CENTER" wrapText="true"
+                           style="-fx-text-fill: #95a5a6; -fx-font-size: 12px; -fx-padding: 20;"
+                           VBox.vgrow="ALWAYS" maxWidth="Infinity" maxHeight="Infinity" />
+                </VBox>
+
+            </SplitPane>
+        </SplitPane>
+    </center>
+
+    <!-- ═══════════ BOTTOM: barra de estado ═══════════ -->
+    <bottom>
+        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="status-bar">
+            <Label fx:id="lblEstado" styleClass="status-label"
+                   text="Listo." />
             <Region HBox.hgrow="ALWAYS" />
-            <Label text="Zoom" />
-            <Button mnemonicParsing="false" onAction="#zoomOut" text="-" />
-            <Slider fx:id="zoom_slider" HBox.hgrow="SOMETIMES" />
-            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#zoomIn" text="+" />
-         </children>
-         <BorderPane.margin>
-            <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-         </BorderPane.margin>
-      </HBox>
-   </top>
-   <bottom>
-      <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="mousePosition" minHeight="-Infinity" minWidth="-Infinity" text="SceneX:     ScenY:     " wrapText="true" HBox.hgrow="ALWAYS" />
-         </children>
-         <BorderPane.margin>
-            <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-         </BorderPane.margin>
-      </HBox>
-   </bottom>
+            <Label fx:id="lblSesionInfo" styleClass="status-label" text="" />
+        </HBox>
+    </bottom>
+
 </BorderPane>
