@@ -726,10 +726,7 @@ public class PantallaPrincipalController implements Initializable {
         a.setTitle("Acerca de");
         a.setHeaderText("Running la Safor — IPC 2026");
         a.setContentText(
-            "Aplicación de seguimiento de actividades deportivas.\n" +
-            "Interfaces Persona-Computador · Universitat Politècnica de València · DSIC\n\n" +
-            "Librería: IPC2026-1.0.0.jar\n" +
-            "Tecnología: JavaFX");
+            "En caso de haber algún problema contactar con: \nrlargra@upv.edu.es \nimareng@upv.edu.es \nosanjim@upv.edu.es"  );
         a.initOwner(mapScrollPane.getScene().getWindow());
         a.showAndWait();
     }
