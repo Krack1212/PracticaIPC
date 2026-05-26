@@ -40,7 +40,7 @@ public class HistorialController implements Initializable {
         configurarColumnas();
         cargarSesiones();
     }
-
+    //Método con IA
     private void configurarColumnas() {
         colInicio.setCellValueFactory(c ->
             new SimpleStringProperty(c.getValue().getStartTime() != null
@@ -68,7 +68,7 @@ public class HistorialController implements Initializable {
         colAnotac.setCellValueFactory(c ->
             new SimpleStringProperty(String.valueOf(c.getValue().getAnnotationsCreated())));
     }
-
+    //Método con IA
     private void cargarSesiones() {
         SportActivityApp app = SportActivityApp.getInstance();
         User user = app.getCurrentUser();

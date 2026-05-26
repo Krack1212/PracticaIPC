@@ -12,48 +12,41 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="20"
-      style="-fx-background-color: #f0f4f8; -fx-padding: 40;"
-      xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="autenticarse.AutenticarseController">
+
+<!--CSS HECHO CON IA-->
+
+
+<VBox alignment="CENTER" spacing="20" style="-fx-background-color: #f0f4f8; -fx-padding: 40;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="autenticarse.AutenticarseController">
 
     <children>
 
-       
-        <ImageView fitHeight="80" fitWidth="80" preserveRatio="true">
-            <image><Image url="@../resources/logo.png" /></image>
+        <ImageView fitHeight="93.0" fitWidth="99.0" preserveRatio="true">
+            <image><Image url="@../resources/PortadaRunning.png" /></image>
         </ImageView>
 
-        
-        <Label text="Running la Safor" styleClass="title-label" />
-        <Label text="Interfaces Persona-Computador — IPC 2026" styleClass="subtitle-label" />
+        <Label styleClass="title-label" text="Running la Safor" />
+        <Label styleClass="subtitle-label" text="Interfaces Persona-Computador — IPC 2026" />
 
-        
-        <VBox spacing="10" maxWidth="360" styleClass="card">
+        <VBox maxWidth="500.0" prefWidth="380.0" fillWidth="true" spacing="12" styleClass="card" style="-fx-padding: 25;">
 
-            <Label text="Iniciar sesión" style="-fx-font-size: 17px; -fx-font-weight: bold;" />
+            <Label style="-fx-font-size: 17px; -fx-font-weight: bold;" text="Iniciar sesión" />
 
             <Label text="Nickname:" />
-            <TextField fx:id="txtNick" promptText="Introduce tu nickname" />
+            <TextField fx:id="txtNick" maxWidth="Infinity" promptText="Introduce tu nickname" />
 
             <Label text="Contraseña:" />
-            <PasswordField fx:id="txtPassword" promptText="Introduce tu contraseña" />
+            <PasswordField fx:id="txtPassword" maxWidth="Infinity" promptText="Introduce tu contraseña" />
 
-            
-            <Label fx:id="lblError" styleClass="error-label"
-                   visible="false" managed="false" wrapText="true" />
+            <Label fx:id="lblError" managed="false" styleClass="error-label" visible="false" wrapText="true" />
 
-            <Button text="Iniciar sesión" onAction="#login"
-                    maxWidth="Infinity" styleClass="btn-primary">
-                <VBox.margin><Insets top="6"/></VBox.margin>
+            <Button maxWidth="Infinity" onAction="#login" styleClass="btn-primary" text="Iniciar sesión">
+                <VBox.margin><Insets top="6" /></VBox.margin>
             </Button>
 
             <Separator />
 
             <HBox alignment="CENTER" spacing="4">
-                <Label text="¿No tienes cuenta?" />
-                <Hyperlink text="Regístrate" onAction="#irARegistro" />
+                <Hyperlink onAction="#irARegistro" text="¿No tienes cuenta? Regístrate aquí" />
             </HBox>
 
         </VBox>

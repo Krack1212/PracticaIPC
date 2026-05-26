@@ -13,6 +13,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+
+<!--CSS HECHO CON IA-->
+
+
 <ScrollPane fitToWidth="true"
             style="-fx-background-color: #f0f4f8;"
             xmlns="http://javafx.com/javafx/17"

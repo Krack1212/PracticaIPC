@@ -24,6 +24,10 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
+
+<!--CSS HECHO CON IA-->
+
+
 <BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="PantallaPrincipal.PantallaPrincipalController">

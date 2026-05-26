@@ -20,7 +20,7 @@ public class MapaDemo extends Application {
         primaryStage = stage;
         stage.setTitle("Running la Safor — IPC 2026");
 
-        InputStream logo = getClass().getResourceAsStream("/resources/logo.png");
+        InputStream logo = getClass().getResourceAsStream("/resources/PortadaRunning.png");
         if (logo != null) {
             stage.getIcons().add(new Image(logo));
         }
@@ -41,7 +41,7 @@ public class MapaDemo extends Application {
             scene.getStylesheets().add(css);
 
             primaryStage.setScene(scene);
-            primaryStage.setResizable(maximized);
+            
             if (maximized) {
                 primaryStage.setMaximized(true);
             }
