@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "Bash(pip install *)",
+      "Bash(Get-ChildItem \"C:\\\\Users\\\\ivanc\\\\Downloads\" -Filter \"*.zip\")",
+      "Bash(Select-Object Name, Length)",
+      "PowerShell(dir \"C:\\\\Users\\\\ivanc\\\\Downloads\\\\IPC_FXMLCore-master\\\\IPC_FORMULARILOGIN\\\\src\" -Recurse | ForEach-Object { $_.FullName })",
+      "Bash(grep -E \"\\\\.\\(fxml|java|css|xml|properties\\)$\")"
+    ]
+  }
+}

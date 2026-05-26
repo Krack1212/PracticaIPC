@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Running la Safor — Diagrama de Contenidos</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:#f5f6fa;
+    font-family:'Inter','Segoe UI',sans-serif;
+    font-size:13px; color:#1a1a2e;
+    padding:36px 40px 60px;
+  }
+
+  /* ══ PORTADA ══ */
+  .cover{
+    display:flex; align-items:center; justify-content:space-between;
+    border-bottom:3px solid #2c3e50; padding-bottom:18px; margin-bottom:28px;
+  }
+  .cover-left{display:flex;align-items:center;gap:14px;}
+  .cover-logo{
+    width:54px;height:54px;border-radius:12px;
+    background:linear-gradient(135deg,#2c3e50,#3498db);
+    display:flex;align-items:center;justify-content:center;
+    font-size:26px;color:white;
+  }
+  .cover-title{font-size:22px;font-weight:800;color:#2c3e50;line-height:1.1;}
+  .cover-sub{font-size:11px;color:#7f8c8d;margin-top:3px;}
+  .cover-badge{
+    background:#2c3e50;color:white;border-radius:8px;
+    padding:8px 16px;font-size:11px;font-weight:600;text-align:right;line-height:1.6;
+  }
+
+  /* ══ SECTION HEADERS ══ */
+  .sec{
+    font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+    color:#7f8c8d; margin:28px 0 12px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .sec::before{
+    content:'';width:4px;height:16px;background:#3498db;border-radius:2px;
+  }
+  .sec .step-badge{
+    background:#3498db;color:white;border-radius:20px;
+    padding:1px 10px;font-size:9px;font-weight:700;
+  }
+
+  /* ══ PASO 1: TABLA DE OBJETOS ══ */
+  .objects-grid{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
+    margin-bottom:6px;
+  }
+  .obj-card{
+    background:white;border:2px solid #ecf0f1;border-radius:10px;
+    padding:10px 12px;box-shadow:0 2px 6px rgba(0,0,0,.06);
+  }
+  .obj-card-header{
+    display:flex;align-items:center;gap:7px;margin-bottom:8px;
+    padding-bottom:6px;border-bottom:1px solid #ecf0f1;
+  }
+  .obj-icon{font-size:18px;}
+  .obj-name{font-size:12px;font-weight:700;color:#2c3e50;}
+  .obj-attrs{margin-bottom:6px;}
+  .obj-attrs li,
+  .obj-actions li{font-size:10px;color:#555;margin-left:14px;margin-bottom:1px;}
+  .attr-title,.action-title{font-size:9px;font-weight:700;color:#7f8c8d;
+    letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;}
+  .action-item{
+    display:inline-block;background:#eaf4fb;color:#2980b9;
+    border-radius:4px;padding:1px 7px;font-size:9px;font-weight:600;
+    margin:1px 1px 1px 0;
+  }
+  .action-item.red{background:#fdf2f2;color:#c0392b;}
+  .action-item.green{background:#eafaf1;color:#1e8449;}
+
+  /* ══ PASO 2+3: DIAGRAMA DE CONTENIDOS ══ */
+  .diagram-wrap{
+    background:white;border:2px solid #dfe6e9;border-radius:14px;
+    padding:32px 36px 36px;box-shadow:0 4px 18px rgba(0,0,0,.07);
+    position:relative;overflow:visible;
+  }
+  .diagram-legend{
+    display:flex;gap:20px;align-items:center;margin-bottom:24px;
+    padding:8px 14px;background:#f8f9fa;border-radius:8px;
+    border:1px solid #ecf0f1;font-size:10px;color:#555;
+  }
+  .leg-item{display:flex;align-items:center;gap:6px;}
+  .leg-box{width:18px;height:12px;border-radius:3px;border:2px solid;}
+  .leg-arr{font-size:14px;color:#2c3e50;}
+
+  /* SVG diagram */
+  .diagram-svg{width:100%;display:block;}
+
+  /* container boxes */
+  .ct{cursor:default;}
+  .ct-rect{rx:10;ry:10;stroke-width:2;}
+  .ct-main .ct-rect{stroke:#2c3e50;fill:#2c3e50;}
+  .ct-screen .ct-rect{stroke:#2980b9;fill:white;}
+  .ct-modal .ct-rect{stroke:#8e44ad;fill:white;}
+  .ct-dialog .ct-rect{stroke:#27ae60;fill:white;}
+
+  .ct-title{font-size:12px;font-weight:700;dominant-baseline:auto;}
+  .ct-subtitle{font-size:9px;fill:#7f8c8d;}
+  .ct-item{font-size:9.5px;fill:#34495e;}
+  .ct-item-action{font-size:9px;fill:#2980b9;font-weight:600;}
+  .ct-label{font-size:9px;fill:#7f8c8d;letter-spacing:.04em;}
+
+  /* arrows */
+  .arr-line{stroke:#2c3e50;stroke-width:1.8;fill:none;marker-end:url(#arrow);}
+  .arr-line.modal{stroke:#8e44ad;stroke-width:1.5;stroke-dasharray:6,3;}
+  .arr-line.back{stroke:#95a5a6;stroke-width:1.3;stroke-dasharray:4,3;}
+  .arr-label{font-size:8.5px;fill:#7f8c8d;}
+
+  /* ══ PASO 3 LEGEND: FLUJO EN TEXTO ══ */
+  .flow-table{
+    width:100%;border-collapse:collapse;margin-top:8px;
+  }
+  .flow-table th{
+    background:#2c3e50;color:white;padding:6px 10px;
+    font-size:10px;font-weight:600;text-align:left;
+  }
+  .flow-table td{
+    padding:5px 10px;font-size:10px;border-bottom:1px solid #ecf0f1;
+    vertical-align:top;
+  }
+  .flow-table tr:nth-child(even) td{background:#f8f9fa;}
+  .flow-from{font-weight:600;color:#2c3e50;}
+  .flow-to{font-weight:600;color:#2980b9;}
+  .tag{display:inline-block;border-radius:20px;padding:1px 8px;
+    font-size:8.5px;font-weight:700;margin-right:2px;}
+  .tag-main{background:#2c3e50;color:white;}
+  .tag-screen{background:#2980b9;color:white;}
+  .tag-modal{background:#8e44ad;color:white;}
+  .tag-dlg{background:#27ae60;color:white;}
+</style>
+</head>
+<body>
+
+<!-- ══ PORTADA ══ -->
+<div class="cover">
+  <div class="cover-left">
+    <div class="cover-logo">🏃</div>
+    <div>
+      <div class="cover-title">Running la Safor — Diagrama de Contenidos</div>
+      <div class="cover-sub">Diseño Conceptual · Tema 5 IPC 2026 · DSIC · Universitat Politècnica de València</div>
+    </div>
+  </div>
+  <div class="cover-badge">
+    Método: Diagrama de Contenidos<br>
+    Pasos: 1) Objetos &amp; acciones &nbsp;2) Contenedores &nbsp;3) Navegación
+  </div>
+</div>
+
+<!-- ══ PASO 1 ══ -->
+<div class="sec">Paso 1 <span class="step-badge">PASO 1</span> Objetos de tarea primarios, atributos y acciones</div>
+
+<div class="objects-grid">
+
+  <!-- Usuario -->
+  <div class="obj-card">
+    <div class="obj-card-header">
+      <span class="obj-icon">👤</span>
+      <span class="obj-name">Usuario</span>
+    </div>
+    <div class="attr-title">Atributos</div>
+    <ul class="obj-attrs">
+      <li>nick (6-15 chars)</li>
+      <li>email</li>
+      <li>contraseña</li>
+      <li>fecha nacimiento</li>
+      <li>avatar (imagen)</li>
+    </ul>
+    <div class="attr-title">Acciones</div>
+    <span class="action-item green">Registrarse</span>
+    <span class="action-item">Autenticarse</span>
+    <span class="action-item">Modificar perfil</span>
+    <span class="action-item red">Cerrar sesión</span>
+  </div>
+
+  <!-- Actividad -->
+  <div class="obj-card">
+    <div class="obj-card-header">
+      <span class="obj-icon">🗺️</span>
+      <span class="obj-name">Actividad</span>
+    </div>
+    <div class="attr-title">Atributos</div>
+    <ul class="obj-attrs">
+      <li>nombre</li>
+      <li>fecha inicio / fin</li>
+      <li>duración</li>
+      <li>distancia total</li>
+      <li>desnivel +/−</li>
+      <li>track points (GPS)</li>
+    </ul>
+    <div class="attr-title">Acciones</div>
+    <span class="action-item green">Importar GPX</span>
+    <span class="action-item">Ver en mapa</span>
+    <span class="action-item">Ver estadísticas</span>
+    <span class="action-item red">Eliminar</span>
+  </div>
+
+  <!-- Sesión -->
+  <div class="obj-card">
+    <div class="obj-card-header">
+      <span class="obj-icon">⏱️</span>
+      <span class="obj-name">Sesión</span>
+    </div>
+    <div class="attr-title">Atributos</div>
+    <ul class="obj-attrs">
+      <li>fecha/hora inicio</li>
+      <li>fecha/hora fin</li>
+      <li>duración</li>
+      <li>actividades import.</li>
+      <li>actividades vistas</li>
+      <li>anotaciones creadas</li>
+    </ul>
+    <div class="attr-title">Acciones</div>
+    <span class="action-item">Ver historial</span>
+    <span class="action-item">Ver totales</span>
+  </div>
+
+  <!-- Anotación -->
+  <div class="obj-card">
+    <div class="obj-card-header">
+      <span class="obj-icon">📌</span>
+      <span class="obj-name">Anotación</span>
+    </div>
+    <div class="attr-title">Atributos</div>
+    <ul class="obj-attrs">
+      <li>tipo (punto/texto/línea/círculo)</li>
+      <li>texto</li>
+      <li>color</li>
+      <li>grosor trazo</li>
+      <li>puntos geográficos</li>
+    </ul>
+    <div class="attr-title">Acciones</div>
+    <span class="action-item green">Crear</span>
+    <span class="action-item">Ver en mapa</span>
+  </div>
+
+  <!-- Mapa -->
+  <div class="obj-card">
+    <div class="obj-card-header">
+      <span class="obj-icon">🧭</span>
+      <span class="obj-name">Mapa (Región)</span>
+    </div>
+    <div class="attr-title">Atributos</div>
+    <ul class="obj-attrs">
+      <li>nombre</li>
+      <li>imagen de fondo</li>
+      <li>lat. mínima/máxima</li>
+      <li>lon. mínima/máxima</li>
+    </ul>
+    <div class="attr-title">Acciones</div>
+    <span class="action-item green">Añadir mapa</span>
+    <span class="action-item">Ver disponibles</span>
+    <span class="action-item">Proyectar ruta</span>
+  </div>
+
+</div>
+
+<!-- ══ PASOS 2 y 3 ══ -->
+<div class="sec" style="margin-top:30px;">
+  Pasos 2 &amp; 3
+  <span class="step-badge">PASO 2</span> Contenedores
+  <span class="step-badge" style="background:#27ae60;">PASO 3</span> Navegación
+</div>
+
+<div class="diagram-wrap">
+
+  <!-- Leyenda -->
+  <div class="diagram-legend">
+    <strong style="font-size:10px;color:#2c3e50;">Leyenda:</strong>
+    <div class="leg-item">
+      <div class="leg-box" style="background:#2c3e50;border-color:#2c3e50;"></div>
+      Contenedor principal (pantalla autónoma)
+    </div>
+    <div class="leg-item">
+      <div class="leg-box" style="background:white;border-color:#2980b9;"></div>
+      Contenedor pantalla
+    </div>
+    <div class="leg-item">
+      <div class="leg-box" style="background:white;border-color:#8e44ad;border-style:dashed;"></div>
+      Contenedor modal
+    </div>
+    <div class="leg-item">
+      <div class="leg-box" style="background:white;border-color:#27ae60;"></div>
+      Contenedor diálogo
+    </div>
+    <div class="leg-item"><span class="leg-arr">→</span> Navegación directa</div>
+    <div class="leg-item"><span class="leg-arr" style="color:#8e44ad;">⇢</span> Navegación modal</div>
+    <div class="leg-item"><span class="leg-arr" style="color:#95a5a6;">⟵</span> Retorno</div>
+  </div>
+
+  <svg class="diagram-svg" viewBox="0 0 1060 620" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#2c3e50"/>
+      </marker>
+      <marker id="arrow-modal" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#8e44ad"/>
+      </marker>
+      <marker id="arrow-back" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#95a5a6"/>
+      </marker>
+    </defs>
+
+    <!-- ════════════════ C1: AUTENTICACIÓN (principal) ════════════════ -->
+    <g class="ct ct-main">
+      <rect class="ct-rect" x="30" y="30" width="200" height="195" rx="10" ry="10"
+            fill="#2c3e50" stroke="#1a252f" stroke-width="2"/>
+      <!-- header -->
+      <rect x="30" y="30" width="200" height="32" rx="10" ry="10" fill="#1a252f"/>
+      <rect x="30" y="50" width="200" height="12" fill="#1a252f"/>
+      <text x="130" y="51" text-anchor="middle" font-size="12" font-weight="700" fill="white">C1: AUTENTICACIÓN</text>
+      <text x="130" y="65" text-anchor="middle" font-size="9" fill="#95a5a6">Pantalla de inicio · principal</text>
+
+      <!-- contenido -->
+      <text x="46" y="88" class="ct-item" fill="#bdc3c7" font-size="9.5">Objetos:</text>
+      <text x="52" y="103" fill="#ecf0f1" font-size="9.5">▸ Campo: Nickname</text>
+      <text x="52" y="117" fill="#ecf0f1" font-size="9.5">▸ Campo: Contraseña</text>
+      <text x="52" y="131" fill="#ecf0f1" font-size="9.5">▸ Etiqueta de error</text>
+      <text x="46" y="148" class="ct-item" fill="#bdc3c7" font-size="9.5">Acciones:</text>
+      <text x="52" y="163" fill="#27ae60" font-size="9.5" font-weight="600">✓ Iniciar sesión</text>
+      <text x="52" y="177" fill="#3498db" font-size="9.5">→ Ir a Registro</text>
+      <text x="46" y="197" fill="#7f8c8d" font-size="8.5" font-style="italic">Validación: nick+pass vacíos</text>
+      <text x="46" y="209" fill="#7f8c8d" font-size="8.5" font-style="italic">Error: credenciales incorrectas</text>
+    </g>
+
+    <!-- ════════════════ C2: REGISTRO ════════════════ -->
+    <g class="ct">
+      <rect x="30" y="260" width="200" height="225" rx="10" ry="10"
+            fill="white" stroke="#2980b9" stroke-width="2"/>
+      <rect x="30" y="260" width="200" height="30" rx="10" ry="10" fill="#2980b9"/>
+      <rect x="30" y="278" width="200" height="12" fill="#2980b9"/>
+      <text x="130" y="280" text-anchor="middle" font-size="12" font-weight="700" fill="white">C2: REGISTRO</text>
+      <text x="130" y="293" text-anchor="middle" font-size="9" fill="#d6eaf8">Pantalla de registro</text>
+
+      <text x="46" y="316" fill="#7f8c8d" font-size="9" font-weight="600">Objetos:</text>
+      <text x="52" y="330" fill="#2c3e50" font-size="9.5">▸ Campo: Nickname (6-15)</text>
+      <text x="52" y="344" fill="#2c3e50" font-size="9.5">▸ Campo: Email</text>
+      <text x="52" y="358" fill="#2c3e50" font-size="9.5">▸ Campo: Contraseña (8-20)</text>
+      <text x="52" y="372" fill="#2c3e50" font-size="9.5">▸ Campo: Fecha nacimiento</text>
+      <text x="52" y="386" fill="#2c3e50" font-size="9.5">▸ Selector: Avatar (imagen)</text>
+      <text x="52" y="400" fill="#2c3e50" font-size="9.5">▸ Indicadores de validación</text>
+      <text x="46" y="416" fill="#7f8c8d" font-size="9" font-weight="600">Acciones:</text>
+      <text x="52" y="430" fill="#27ae60" font-size="9.5" font-weight="600">✓ Crear cuenta</text>
+      <text x="52" y="444" fill="#3498db" font-size="9.5">← Volver a Login</text>
+      <text x="46" y="462" fill="#95a5a6" font-size="8.5" font-style="italic">Validación campo a campo</text>
+    </g>
+
+    <!-- ════════════════ C3: PANTALLA PRINCIPAL ════════════════ -->
+    <!-- outer box -->
+    <rect x="272" y="30" width="620" height="430" rx="12" ry="12"
+          fill="white" stroke="#2980b9" stroke-width="2.5"/>
+    <rect x="272" y="30" width="620" height="34" rx="12" ry="12" fill="#2980b9"/>
+    <rect x="272" y="52" width="620" height="12" fill="#2980b9"/>
+    <text x="582" y="52" text-anchor="middle" font-size="13" font-weight="700" fill="white">C3: PANTALLA PRINCIPAL</text>
+    <text x="582" y="65" text-anchor="middle" font-size="9" fill="#d6eaf8">Pantalla principal de la aplicación — maximizada</text>
+
+    <!-- inner sub-containers label -->
+    <text x="288" y="86" fill="#7f8c8d" font-size="9" font-weight="700">Sub-contenedores:</text>
+
+    <!-- C3a: Barra menú -->
+    <rect x="288" y="94" width="588" height="50" rx="6" ry="6"
+          fill="#f8f9fa" stroke="#bdc3c7" stroke-width="1.2" stroke-dasharray="4,2"/>
+    <text x="298" y="109" fill="#2c3e50" font-size="9.5" font-weight="600">C3a · Menú + Barra de usuario</text>
+    <text x="298" y="122" fill="#555" font-size="9">Acciones: Importar GPX · Eliminar actividad · Modificar perfil · Historial · Cerrar sesión · Añadir mapa · Acerca de · Zoom · Ver velocidad</text>
+    <text x="298" y="135" fill="#2980b9" font-size="9">Objetos: Avatar usuario · Nickname · Slider zoom · Checkbox velocidad</text>
+
+    <!-- C3b: Lista actividades -->
+    <rect x="288" y="154" width="172" height="188" rx="6" ry="6"
+          fill="#f0f4f8" stroke="#3498db" stroke-width="1.5"/>
+    <text x="374" y="171" text-anchor="middle" fill="#2c3e50" font-size="10" font-weight="700">C3b · Lista Actividades</text>
+    <text x="374" y="185" text-anchor="middle" fill="#7f8c8d" font-size="8.5">+ Resumen mensual</text>
+    <text x="300" y="202" fill="#555" font-size="9">Objetos:</text>
+    <text x="306" y="215" fill="#34495e" font-size="9">▸ Lista: Actividades del usuario</text>
+    <text x="306" y="228" fill="#34495e" font-size="9">▸ Etiqueta: Dist. + fecha</text>
+    <text x="306" y="241" fill="#34495e" font-size="9">▸ Resumen mes (dist/tiempo/desnivel)</text>
+    <text x="300" y="258" fill="#555" font-size="9">Acciones:</text>
+    <text x="306" y="271" fill="#27ae60" font-size="9" font-weight="600">▸ Importar GPX (botón)</text>
+    <text x="306" y="284" fill="#e74c3c" font-size="9" font-weight="600">▸ Eliminar seleccionada</text>
+    <text x="306" y="297" fill="#2980b9" font-size="9">▸ Seleccionar → ver ruta</text>
+    <text x="300" y="330" fill="#7f8c8d" font-size="8" font-style="italic">Acumulados: dist/tiempo/desnivel</text>
+    <text x="300" y="342" fill="#7f8c8d" font-size="8" font-style="italic">del mes en curso</text>
+
+    <!-- C3c: Mapa interactivo -->
+    <rect x="472" y="154" width="248" height="188" rx="6" ry="6"
+          fill="#f0f8ee" stroke="#27ae60" stroke-width="1.5"/>
+    <text x="596" y="171" text-anchor="middle" fill="#2c3e50" font-size="10" font-weight="700">C3c · Mapa Interactivo</text>
+    <text x="596" y="185" text-anchor="middle" fill="#7f8c8d" font-size="8.5">ScrollPane + zoom + ruta GPS</text>
+    <text x="484" y="202" fill="#555" font-size="9">Objetos:</text>
+    <text x="490" y="215" fill="#34495e" font-size="9">▸ Imagen del mapa (región)</text>
+    <text x="490" y="228" fill="#34495e" font-size="9">▸ Ruta GPS (Polyline / segmentos)</text>
+    <text x="490" y="241" fill="#34495e" font-size="9">▸ Marcador inicio (verde) y fin (rojo)</text>
+    <text x="490" y="254" fill="#34495e" font-size="9">▸ Anotaciones (punto/texto/línea/círculo)</text>
+    <text x="490" y="267" fill="#34495e" font-size="9">▸ Coords. ratón (lat/lon)</text>
+    <text x="484" y="283" fill="#555" font-size="9">Acciones:</text>
+    <text x="490" y="296" fill="#2980b9" font-size="9">▸ Zoom in/out/reset</text>
+    <text x="490" y="309" fill="#2980b9" font-size="9">▸ Clic derecho → menú anotaciones</text>
+    <text x="490" y="322" fill="#27ae60" font-size="9" font-weight="600">▸ Añadir anotación (4 tipos)</text>
+    <text x="490" y="335" fill="#2980b9" font-size="9">▸ Hover gráfica → marker mapa</text>
+
+    <!-- C3d: Estadísticas + Gráfica -->
+    <rect x="732" y="154" width="148" height="188" rx="6" ry="6"
+          fill="#fdf2fb" stroke="#8e44ad" stroke-width="1.5"/>
+    <text x="806" y="171" text-anchor="middle" fill="#2c3e50" font-size="10" font-weight="700">C3d · Estadísticas</text>
+    <text x="806" y="185" text-anchor="middle" fill="#7f8c8d" font-size="8.5">+ Gráfica de desnivel</text>
+    <text x="744" y="202" fill="#555" font-size="9">Objetos:</text>
+    <text x="750" y="215" fill="#34495e" font-size="9">▸ Grid 2×4: distancia,</text>
+    <text x="756" y="227" fill="#34495e" font-size="9">  duración, vel. media,</text>
+    <text x="756" y="239" fill="#34495e" font-size="9">  ritmo, desn+/−, alt min/max</text>
+    <text x="750" y="254" fill="#34495e" font-size="9">▸ AreaChart: perfil altitud</text>
+    <text x="750" y="267" fill="#34495e" font-size="9">  (distancia km vs altitud m)</text>
+    <text x="744" y="283" fill="#555" font-size="9">Acciones:</text>
+    <text x="750" y="296" fill="#2980b9" font-size="9">▸ Hover chart → marker mapa</text>
+    <text x="750" y="309" fill="#2980b9" font-size="9">▸ Toggle vel. (color ruta)</text>
+
+    <!-- C3e: Barra de estado -->
+    <rect x="288" y="352" width="588" height="36" rx="6" ry="6"
+          fill="#f8f9fa" stroke="#bdc3c7" stroke-width="1.2" stroke-dasharray="4,2"/>
+    <text x="298" y="367" fill="#2c3e50" font-size="9.5" font-weight="600">C3e · Barra de estado</text>
+    <text x="298" y="380" fill="#555" font-size="9">Objetos: Etiqueta estado (actividad/errores) · Etiqueta sesión (fecha/hora inicio)</text>
+
+    <!-- C3 acciones globales -->
+    <rect x="288" y="397" width="588" height="46" rx="6" ry="6"
+          fill="#fff9f0" stroke="#f39c12" stroke-width="1.2" stroke-dasharray="4,2"/>
+    <text x="298" y="412" fill="#d35400" font-size="9.5" font-weight="600">Acciones globales de C3 (menú)</text>
+    <text x="298" y="425" fill="#555" font-size="9">Importar GPX · Eliminar actividad · Cerrar sesión → C1 · Abrir Historial → C4 [modal] · Modificar Perfil → C5 [modal]</text>
+    <text x="298" y="438" fill="#555" font-size="9">Añadir mapa → C6 [diálogo] · Gestionar mapas → C6 [diálogo] · Ver velocidad · Acerca de</text>
+
+    <!-- ════════════════ C4: HISTORIAL SESIONES (modal) ════════════════ -->
+    <g class="ct">
+      <rect x="272" y="494" width="295" height="115" rx="10" ry="10"
+            fill="white" stroke="#8e44ad" stroke-width="2" stroke-dasharray="6,3"/>
+      <rect x="272" y="494" width="295" height="28" rx="10" ry="10" fill="#8e44ad"/>
+      <rect x="272" y="510" width="295" height="12" fill="#8e44ad"/>
+      <text x="419" y="513" text-anchor="middle" font-size="11" font-weight="700" fill="white">C4: HISTORIAL DE SESIONES  [modal]</text>
+      <text x="419" y="525" text-anchor="middle" font-size="8.5" fill="#e8daef">Ventana modal secundaria</text>
+      <text x="286" y="543" fill="#7f8c8d" font-size="9" font-weight="600">Objetos:</text>
+      <text x="292" y="556" fill="#34495e" font-size="9">▸ Tabla: inicio, fin, duración, activ. import./vistas, anotaciones</text>
+      <text x="292" y="569" fill="#34495e" font-size="9">▸ Totales acumulados (sesiones, importadas, vistas, anotaciones)</text>
+      <text x="286" y="583" fill="#8e44ad" font-size="9" font-weight="600">Acción: Cerrar → regresa a C3</text>
+      <text x="286" y="596" fill="#7f8c8d" font-size="8.5" font-style="italic">Guard: usuario autenticado</text>
+    </g>
+
+    <!-- ════════════════ C5: MODIFICAR PERFIL (modal) ════════════════ -->
+    <g class="ct">
+      <rect x="585" y="494" width="307" height="115" rx="10" ry="10"
+            fill="white" stroke="#8e44ad" stroke-width="2" stroke-dasharray="6,3"/>
+      <rect x="585" y="494" width="307" height="28" rx="10" ry="10" fill="#8e44ad"/>
+      <rect x="585" y="510" width="307" height="12" fill="#8e44ad"/>
+      <text x="738" y="513" text-anchor="middle" font-size="11" font-weight="700" fill="white">C5: MODIFICAR PERFIL  [modal]</text>
+      <text x="738" y="525" text-anchor="middle" font-size="8.5" fill="#e8daef">Ventana modal secundaria</text>
+      <text x="599" y="543" fill="#7f8c8d" font-size="9" font-weight="600">Objetos:</text>
+      <text x="605" y="556" fill="#34495e" font-size="9">▸ Nick (solo lectura) · Avatar · Email · Contraseña · Fecha nac.</text>
+      <text x="605" y="569" fill="#34495e" font-size="9">▸ Botón: Cambiar avatar · Eliminar avatar</text>
+      <text x="599" y="583" fill="#8e44ad" font-size="9" font-weight="600">Acciones: Guardar cambios · Cancelar → regresa a C3</text>
+      <text x="599" y="596" fill="#7f8c8d" font-size="8.5" font-style="italic">Pre-cargado con datos del usuario actual</text>
+    </g>
+
+    <!-- ════════ C6: GESTIÓN MAPAS (diálogo) — abajo derecha ════════ -->
+    <g class="ct">
+      <rect x="908" y="200" width="140" height="180" rx="10" ry="10"
+            fill="white" stroke="#27ae60" stroke-width="2"/>
+      <rect x="908" y="200" width="140" height="28" rx="10" ry="10" fill="#27ae60"/>
+      <rect x="908" y="216" width="140" height="12" fill="#27ae60"/>
+      <text x="978" y="218" text-anchor="middle" font-size="10" font-weight="700" fill="white">C6: MAPAS</text>
+      <text x="978" y="231" text-anchor="middle" font-size="8" fill="#d5f5e3">[diálogo]</text>
+      <text x="920" y="252" fill="#7f8c8d" font-size="8.5" font-weight="600">Añadir mapa:</text>
+      <text x="926" y="265" fill="#34495e" font-size="8.5">▸ Nombre</text>
+      <text x="926" y="277" fill="#34495e" font-size="8.5">▸ Imagen (JPG)</text>
+      <text x="926" y="289" fill="#34495e" font-size="8.5">▸ Lat min/max</text>
+      <text x="926" y="301" fill="#34495e" font-size="8.5">▸ Lon min/max</text>
+      <text x="920" y="318" fill="#7f8c8d" font-size="8.5" font-weight="600">Gestionar:</text>
+      <text x="926" y="331" fill="#34495e" font-size="8.5">▸ Lista de mapas</text>
+      <text x="926" y="343" fill="#34495e" font-size="8.5">▸ Coordenadas</text>
+      <text x="920" y="362" fill="#27ae60" font-size="8.5" font-weight="600">Acción: Guardar/Cerrar</text>
+      <text x="920" y="374" fill="#7f8c8d" font-size="8" font-style="italic">→ regresa a C3</text>
+    </g>
+
+    <!-- ══════════════════ FLECHAS DE NAVEGACIÓN ══════════════════ -->
+
+    <!-- C1 → C3 (login correcto) -->
+    <path d="M 230 110 Q 255 110 255 78 L 272 78"
+          stroke="#27ae60" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <text x="236" y="106" fill="#27ae60" font-size="8" font-weight="700">login OK</text>
+
+    <!-- C1 → C2 (ir a registro) -->
+    <path d="M 130 225 L 130 260"
+          stroke="#2c3e50" stroke-width="1.8" fill="none" marker-end="url(#arrow)"/>
+    <text x="135" y="248" fill="#2c3e50" font-size="8">ir a Registro</text>
+
+    <!-- C2 → C1 (cancelar / volver) -->
+    <path d="M 50 260 L 50 225"
+          stroke="#95a5a6" stroke-width="1.3" fill="none" stroke-dasharray="4,3" marker-end="url(#arrow-back)"/>
+    <text x="53" y="247" fill="#95a5a6" font-size="7.5">cancelar</text>
+
+    <!-- C3 → C1 (cerrar sesión) -->
+    <path d="M 272 68 Q 255 68 255 120 L 230 120"
+          stroke="#e74c3c" stroke-width="1.8" fill="none" marker-end="url(#arrow)"/>
+    <text x="236" y="130" fill="#e74c3c" font-size="8" font-weight="700">cerrar sesión</text>
+
+    <!-- C3 → C4 (historial, modal) -->
+    <path d="M 419 460 L 419 494"
+          stroke="#8e44ad" stroke-width="1.8" fill="none" stroke-dasharray="6,3" marker-end="url(#arrow-modal)"/>
+    <text x="424" y="480" fill="#8e44ad" font-size="8" font-weight="600">abrir [modal]</text>
+
+    <!-- C3 → C5 (modificar perfil, modal) -->
+    <path d="M 738 460 L 738 494"
+          stroke="#8e44ad" stroke-width="1.8" fill="none" stroke-dasharray="6,3" marker-end="url(#arrow-modal)"/>
+    <text x="743" y="480" fill="#8e44ad" font-size="8" font-weight="600">abrir [modal]</text>
+
+    <!-- C3 → C6 (mapas, diálogo) -->
+    <path d="M 892 240 L 908 240"
+          stroke="#27ae60" stroke-width="1.8" fill="none" marker-end="url(#arrow)"/>
+    <text x="893" y="234" fill="#27ae60" font-size="8" font-weight="600">añadir/gestionar</text>
+
+    <!-- C4 → C3 (cerrar) -->
+    <path d="M 340 494 L 340 460"
+          stroke="#95a5a6" stroke-width="1.3" fill="none" stroke-dasharray="4,3" marker-end="url(#arrow-back)"/>
+    <text x="344" y="481" fill="#95a5a6" font-size="7.5">cerrar</text>
+
+    <!-- C5 → C3 (cerrar) -->
+    <path d="M 660 494 L 660 460"
+          stroke="#95a5a6" stroke-width="1.3" fill="none" stroke-dasharray="4,3" marker-end="url(#arrow-back)"/>
+    <text x="664" y="481" fill="#95a5a6" font-size="7.5">cerrar</text>
+
+    <!-- C6 → C3 (cerrar diálogo) -->
+    <path d="M 908 330 L 892 330"
+          stroke="#95a5a6" stroke-width="1.3" fill="none" stroke-dasharray="4,3" marker-end="url(#arrow-back)"/>
+    <text x="893" y="324" fill="#95a5a6" font-size="7.5">cerrar</text>
+
+    <!-- C2 → C3 (registro OK) -->
+    <path d="M 230 310 Q 258 310 258 195 L 272 195"
+          stroke="#27ae60" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+    <text x="232" y="304" fill="#27ae60" font-size="8" font-weight="700">registro OK</text>
+
+    <!-- números de contenedores -->
+    <circle cx="50" cy="40" r="12" fill="#1a252f"/>
+    <text x="50" y="44" text-anchor="middle" fill="white" font-size="10" font-weight="700">C1</text>
+    <circle cx="50" cy="268" r="12" fill="#2980b9"/>
+    <text x="50" y="272" text-anchor="middle" fill="white" font-size="10" font-weight="700">C2</text>
+    <circle cx="290" cy="40" r="12" fill="#2980b9"/>
+    <text x="290" y="44" text-anchor="middle" fill="white" font-size="10" font-weight="700">C3</text>
+    <circle cx="290" cy="504" r="12" fill="#8e44ad"/>
+    <text x="290" y="508" text-anchor="middle" fill="white" font-size="10" font-weight="700">C4</text>
+    <circle cx="603" cy="504" r="12" fill="#8e44ad"/>
+    <text x="603" y="508" text-anchor="middle" fill="white" font-size="10" font-weight="700">C5</text>
+    <circle cx="926" cy="210" r="12" fill="#27ae60"/>
+    <text x="926" y="214" text-anchor="middle" fill="white" font-size="10" font-weight="700">C6</text>
+
+  </svg>
+</div>
+
+<!-- ══ TABLA DE NAVEGACIÓN ══ -->
+<div class="sec" style="margin-top:24px;">
+  Resumen de navegación (Paso 3) <span class="step-badge" style="background:#27ae60;">ENLACES</span>
+</div>
+<table class="flow-table">
+  <thead>
+    <tr>
+      <th>Desde</th>
+      <th>Acción del usuario</th>
+      <th>Hacia</th>
+      <th>Tipo</th>
+      <th>Condición / notas</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="flow-from">C1 Autenticación</span></td>
+      <td>Pulsa "Iniciar sesión"</td>
+      <td><span class="flow-to">C3 Pantalla Principal</span></td>
+      <td><span class="tag tag-screen">pantalla</span></td>
+      <td>Nick y contraseña correctos; muestra error si falla</td>
+    </tr>
+    <tr>
+      <td><span class="flow-from">C1 Autenticación</span></td>
+      <td>Pulsa "Regístrate"</td>
+      <td><span class="flow-to">C2 Registro</span></td>
+      <td><span class="tag tag-screen">pantalla</span></td>
+      <td>Navega a formulario de nueva cuenta</td>
+    </tr>
+    <tr>
+      <td><span class="flow-from">C2 Registro</span></td>
+      <td>Pulsa "Registrarse" con datos válidos</td>
+      <td><span class="flow-to">C3 Pantalla Principal</span></td>
+      <td><span class="tag tag-screen">pantalla</span></td>
+      <td>Cuenta creada; usuario queda autenticado</td>
+    </tr>
+    <tr>
+      <td><span class="flow-from">C2 Registro</span></td>
+      <td>Pulsa "Cancelar" / volver</td>
+      <td><span class="flow-to">C1 Autenticación</span></td>
+      <td><span class="tag tag-screen">pantalla</span></td>
+      <td>Retorno sin crear cuenta</td>
+    </tr>
+    <tr>
+      <td><span class="flow-from">C3 Pantalla Principal</span></td>
+      <td>Menú → "Cerrar sesión"</td>
+      <td><span class="flow-to">C1 Autenticación</span></td>
+      <td><span class="tag tag-main">principal</span></td>
+      <td>Llama a app.logout(); desmaxima ventana</td>
+    </tr>
+    <tr>
+      <td><span class="flow-from">C3 Pantalla Principal</span></td>
+      <td>Menú → "Historial de sesiones"</td>
+      <td><span class="flow-to">C4 Historial</span></td>
+      <td><span class="tag tag-modal">modal</span></td>
+      <td>Bloquea C3 hasta cerrar; showAndWait()</td>
+    </tr>
+    <tr>
+      <td><span class="flow-from">C3 Pantalla Principal</span></td>
+      <td>Menú → "Modificar perfil"</td>
+      <td><span class="flow-to">C5 Modificar Perfil</span></td>
+      <td><span class="tag tag-modal">modal</span></td>
+      <td>Bloquea C3; recarga avatar/nick al cerrar</td>
+    </tr>
+    <tr>
+      <td><span class="flow-from">C3 Pantalla Principal</span></td>
+      <td>Menú → "Añadir mapa" / "Gestionar mapas"</td>
+      <td><span class="flow-to">C6 Gestión Mapas</span></td>
+      <td><span class="tag tag-dlg">diálogo</span></td>
+      <td>Dialog JavaFX; valida coordenadas decimales</td>
+    </tr>
+    <tr>
+      <td><span class="flow-from">C4 / C5 / C6</span></td>
+      <td>Pulsa "Cerrar" / "Cancelar" / "Guardar"</td>
+      <td><span class="flow-to">C3 Pantalla Principal</span></td>
+      <td><span class="tag tag-modal">retorno</span></td>
+      <td>Cierra ventana modal/diálogo; foco vuelve a C3</td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

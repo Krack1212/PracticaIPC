@@ -115,7 +115,7 @@ public class RegistroController implements Initializable {
         MapaDemo.cargarVista("/autenticarse/Autenticarse.fxml", 480, 560, false);
     }
 
-    
+    //Método con IA
 
     private void mostrarCampoError(Label lbl, String msg) {
         lbl.setText(msg);
@@ -123,13 +123,17 @@ public class RegistroController implements Initializable {
         lbl.setManaged(true);
     }
 
+    //Método con IA
+    
     private void mostrarMensaje(String msg, boolean exito) {
         lblMensaje.setText(msg);
         lblMensaje.setStyle(exito ? "-fx-text-fill: #27ae60;" : "-fx-text-fill: #e74c3c;");
         lblMensaje.setVisible(true);
         lblMensaje.setManaged(true);
     }
-
+        
+    //Método con IA
+    
     private void limpiarErrores() {
         for (Label lbl : new Label[]{lblNickError, lblEmailError, lblPassError, lblFechaError, lblMensaje}) {
             lbl.setVisible(false);
