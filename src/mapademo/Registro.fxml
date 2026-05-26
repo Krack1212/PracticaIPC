@@ -13,82 +13,53 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <!--CSS HECHO CON IA-->
 
+<ScrollPane fitToWidth="true" style="-fx-background-color: #f0f4f8;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mapademo.RegistroController">
 
-<ScrollPane fitToWidth="true"
-            style="-fx-background-color: #f0f4f8;"
-            xmlns="http://javafx.com/javafx/17"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="mapademo.RegistroController">
-
-    <VBox alignment="CENTER" spacing="15"
-          style="-fx-background-color: #f0f4f8; -fx-padding: 40;">
+    <VBox alignment="CENTER" spacing="15" style="-fx-background-color: #f0f4f8; -fx-padding: 40;">
         <children>
 
-            
-            <ImageView fitHeight="60" fitWidth="60" preserveRatio="true">
-                <image><Image url="@../resources/logo.png" /></image>
+            <ImageView fitHeight="62.0" fitWidth="69.0" preserveRatio="true">
+                <image><Image url="@../resources/PortadaRunning.png" /></image>
             </ImageView>
 
-            <Label text="Crear cuenta" styleClass="title-label" />
-            <Label text="* Campos obligatorios" styleClass="subtitle-label" />
+            <Label styleClass="title-label" text="Crear cuenta" />
+            <Label styleClass="subtitle-label" text="* Campos obligatorios" />
 
-            
-            <VBox spacing="6" maxWidth="400" styleClass="card">
+            <VBox fillWidth="true" maxWidth="500.0" prefWidth="400.0" spacing="10" style="-fx-padding: 25;" styleClass="card">
 
-                
-                <Label text="Nickname *" styleClass="section-title" />
-                <TextField fx:id="txtNick"
-                           promptText="6-15 caracteres: letras, dígitos, -, _" />
-                <Label fx:id="lblNickError" styleClass="error-label"
-                       visible="false" managed="false" wrapText="true" />
+                <Label styleClass="section-title" text="Nickname *" />
+                <TextField fx:id="txtNick" maxWidth="Infinity" promptText="6-15 caracteres: letras, dígitos, -, _" />
+                <Label fx:id="lblNickError" managed="false" styleClass="error-label" visible="false" wrapText="true" />
 
-                
-                <Label text="Correo electrónico *" styleClass="section-title" />
-                <TextField fx:id="txtEmail" promptText="usuario@dominio.com" />
-                <Label fx:id="lblEmailError" styleClass="error-label"
-                       visible="false" managed="false" wrapText="true" />
+                <Label styleClass="section-title" text="Correo electrónico *" />
+                <TextField fx:id="txtEmail" maxWidth="Infinity" promptText="usuario@dominio.com" />
+                <Label fx:id="lblEmailError" managed="false" styleClass="error-label" visible="false" wrapText="true" />
 
-                
-                <Label text="Contraseña *" styleClass="section-title" />
-                <PasswordField fx:id="txtPassword"
-                               promptText="8-20 chars, mayúscula, minúscula, dígito, símbolo" />
-                <Label fx:id="lblPassError" styleClass="error-label"
-                       visible="false" managed="false" wrapText="true" />
+                <Label styleClass="section-title" text="Contraseña *" />
+                <PasswordField fx:id="txtPassword" maxWidth="Infinity" promptText="8-20 chars, mayúscula, minúscula, dígito, símbolo" />
+                <Label fx:id="lblPassError" managed="false" styleClass="error-label" visible="false" wrapText="true" />
 
-                
-                <Label text="Fecha de nacimiento *" styleClass="section-title" />
-                <DatePicker fx:id="dpBirthDate" maxWidth="Infinity"
-                            promptText="dd/MM/yyyy" />
-                <Label fx:id="lblFechaError" styleClass="error-label"
-                       visible="false" managed="false" wrapText="true" />
+                <Label styleClass="section-title" text="Fecha de nacimiento *" />
+                <DatePicker fx:id="dpBirthDate" maxWidth="Infinity" promptText="dd/MM/yyyy" />
+                <Label fx:id="lblFechaError" managed="false" styleClass="error-label" visible="false" wrapText="true" />
 
-                
-                <Label text="Avatar (opcional)" styleClass="section-title" />
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <ImageView fx:id="ivAvatar" fitWidth="52" fitHeight="52"
-                               preserveRatio="true"
-                               style="-fx-border-color: #bdc3c7; -fx-border-radius: 4;" />
-                    <Button text="Seleccionar imagen..."
-                            onAction="#seleccionarAvatar" styleClass="btn-secondary" />
+                <Label styleClass="section-title" text="Avatar (opcional)" />
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <ImageView fx:id="ivAvatar" fitHeight="52" fitWidth="52" preserveRatio="true" style="-fx-border-color: #bdc3c7; -fx-border-radius: 4;" />
+                    <Button onAction="#seleccionarAvatar" styleClass="btn-secondary" text="Seleccionar imagen..." />
                 </HBox>
 
-                
-                <Label fx:id="lblMensaje" wrapText="true"
-                       visible="false" managed="false">
-                    <VBox.margin><Insets top="4"/></VBox.margin>
+                <Label fx:id="lblMensaje" managed="false" visible="false" wrapText="true">
+                    <VBox.margin><Insets top="4" /></VBox.margin>
                 </Label>
 
-                
-                <Button text="Registrarse" onAction="#registrar"
-                        maxWidth="Infinity" styleClass="btn-success">
-                    <VBox.margin><Insets top="6"/></VBox.margin>
+                <Button maxWidth="Infinity" onAction="#registrar" styleClass="btn-success" text="Registrarse">
+                    <VBox.margin><Insets top="6" /></VBox.margin>
                 </Button>
 
-                <Hyperlink text="← Volver al inicio de sesión"
-                           onAction="#volverLogin" />
+                <Hyperlink onAction="#volverLogin" text="← Volver al inicio de sesión" />
 
             </VBox>
         </children>

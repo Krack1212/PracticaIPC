@@ -1,6 +1,7 @@
 package PantallaPrincipal;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -10,11 +11,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.NumberAxis;
@@ -111,6 +115,8 @@ public class PantallaPrincipalController implements Initializable {
     private final SportActivityApp      app  = SportActivityApp.getInstance();
     private final LocalDateTime         sessionStart = LocalDateTime.now();
     private static final DateTimeFormatter FMT_DT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    @FXML
+    private MenuItem miVerVelocidad;
 
     
 
@@ -130,7 +136,8 @@ public class PantallaPrincipalController implements Initializable {
         zoomSlider.setValue(1.0);
         zoomSlider.valueProperty().addListener((o, ov, nv) -> aplicarZoom(nv.doubleValue()));
     }
-
+    
+    //Método con IA
     private void configurarListView() {
         listActividades.setCellFactory(lv -> new ListCell<Activity>() {
             @Override
@@ -155,7 +162,8 @@ public class PantallaPrincipalController implements Initializable {
             (o, ov, nv) -> { if (nv != null) mostrarActividad(nv); }
         );
     }
-
+    
+    //Método con IA
     private void configurarContextMenu() {
         MenuItem miPunto  = new MenuItem("📍 Añadir punto");
         MenuItem miTexto  = new MenuItem("📝 Añadir texto");
@@ -170,7 +178,8 @@ public class PantallaPrincipalController implements Initializable {
         mapContextMenu = new ContextMenu(miPunto, miTexto,
             new SeparatorMenuItem(), miLinea, miCirc);
     }
-
+    
+    //Método con IA
     private void cargarInfoUsuario() {
         User u = app.getCurrentUser();
         if (u == null) return;
@@ -183,6 +192,7 @@ public class PantallaPrincipalController implements Initializable {
         }
     }
 
+    
     private void cargarActividades() {
         List<Activity> acts = app.getUserActivities();
         listActividades.setItems(FXCollections.observableArrayList(acts));
@@ -235,7 +245,7 @@ public class PantallaPrincipalController implements Initializable {
     }
 
     
-
+    //Método con IA
     private void construirMapa(MapRegion region) {
         File imgFile = new File(region.getImagePath());
         if (!imgFile.exists()) {
@@ -296,7 +306,7 @@ public class PantallaPrincipalController implements Initializable {
     }
 
     
-
+    //Método con IA
     private void onMapClicked(javafx.scene.input.MouseEvent e) {
         if (currentActivity == null) return;
         mapContextMenu.hide();
@@ -322,7 +332,7 @@ public class PantallaPrincipalController implements Initializable {
     }
 
     
-
+    //Método con IA
     private void iniciarAnotacion(AnnotationType type) {
         if (currentActivity == null || pendingFirstPoint == null) return;
 
@@ -365,7 +375,8 @@ public class PantallaPrincipalController implements Initializable {
             mapPane.setCursor(javafx.scene.Cursor.CROSSHAIR);
         }
     }
-
+    
+    //Método con IA
     private void guardarAnotacion(List<GeoPoint> puntos) {
         Annotation ann = new Annotation(pendingType, pendingText, pendingColor,
             pendingStrokeWidth, puntos);
@@ -384,6 +395,7 @@ public class PantallaPrincipalController implements Initializable {
         }
     }
 
+    //Método con IA
     private void dibujarUnaAnotacion(Annotation ann) {
         if (projection == null || mapPane == null) return;
         List<GeoPoint> pts = ann.getGeoPoints();
@@ -442,7 +454,7 @@ public class PantallaPrincipalController implements Initializable {
     }
 
     
-
+    //Método con IA
     private void dibujarRuta(Activity act, MapRegion region) {
         List<TrackPoint> tps = act.getTrackPoints();
         if (tps.isEmpty()) return;
@@ -465,6 +477,7 @@ public class PantallaPrincipalController implements Initializable {
         routeGroup.getChildren().addAll(cIni, cFin);
     }
 
+    //Método con IA
     private void dibujarRutaNormal(List<TrackPoint> tps) {
         Polyline ruta = new Polyline();
         for (TrackPoint tp : tps) {
@@ -477,6 +490,7 @@ public class PantallaPrincipalController implements Initializable {
         routeGroup.getChildren().add(ruta);
     }
 
+    //Método con IA
     private void dibujarRutaVelocidad(List<TrackPoint> tps) {
         if (tps.size() < 2) { dibujarRutaNormal(tps); return; }
 
@@ -507,7 +521,7 @@ public class PantallaPrincipalController implements Initializable {
     }
 
     
-
+    //Método con IA
     private void mostrarEstadisticas(Activity act) {
         double km = act.getTotalDistance() / 1000.0;
         Duration dur = act.getDuration();
@@ -528,7 +542,7 @@ public class PantallaPrincipalController implements Initializable {
     }
 
     
-
+    //Método con IA
     private void dibujarGraficaDesnivel(Activity act) {
         elevationChart.getData().clear();
         List<TrackPoint> tps = act.getTrackPoints();
@@ -587,7 +601,7 @@ public class PantallaPrincipalController implements Initializable {
     }
 
     
-
+    //Método con IA
     private void actualizarAcumuladoMes(List<Activity> todas) {
         int mesActual = LocalDateTime.now().getMonthValue();
         int anioActual = LocalDateTime.now().getYear();
@@ -614,7 +628,7 @@ public class PantallaPrincipalController implements Initializable {
     }
 
     
-
+    //Método con IA
     @FXML
     private void importarActividad() {
         FileChooser fc = new FileChooser();
@@ -642,6 +656,7 @@ public class PantallaPrincipalController implements Initializable {
         }
     }
 
+    //Método con IA
     @FXML
     private void eliminarActividad() {
         Activity act = listActividades.getSelectionModel().getSelectedItem();
@@ -668,7 +683,7 @@ public class PantallaPrincipalController implements Initializable {
             lblEstado.setText("Actividad eliminada.");
         }
     }
-
+    //Método con IA
     @FXML
     private void toggleVelocidad() {
         showVelocity = chkVelocidad.isSelected();
@@ -786,7 +801,7 @@ public class PantallaPrincipalController implements Initializable {
     }
 
    
-
+    //Método con IA
     private void dialogGestionarMapas() {
         List<MapRegion> regiones = app.getMapRegions();
 
@@ -850,7 +865,7 @@ public class PantallaPrincipalController implements Initializable {
         a.initOwner(mapScrollPane.getScene().getWindow());
         a.showAndWait();
     }
-
+    //Método con IA
     private static String formatDuracion(Duration dur) {
         if (dur == null) return "—";
         long h = dur.toHours();
@@ -858,11 +873,40 @@ public class PantallaPrincipalController implements Initializable {
         long s = dur.toSecondsPart();
         return String.format("%d:%02d:%02d", h, m, s);
     }
-
+    //Método con IA
     private static String toHex(Color c) {
         return String.format("#%02X%02X%02X",
             (int)(c.getRed()   * 255),
             (int)(c.getGreen() * 255),
             (int)(c.getBlue()  * 255));
+    }
+
+    @FXML
+    private void abrirVerPerfil(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/VerPerfil/VerPerfil.fxml"));
+            Parent root = loader.load();
+
+            Scene nuevaEscena = new Scene(root);
+
+            Stage nuevoStage = new Stage();
+            nuevoStage.setScene(nuevaEscena);
+            nuevoStage.setTitle("Mi Perfil - Running la Safor");
+        
+            // CORRECCIÓN: Bloqueamos el redimensionamiento de la ventana flotante
+            nuevoStage.setResizable(false);
+        
+            // Bloquear la ventana de atrás mientras esta esté abierta
+            nuevoStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+        
+            MenuItem menuItem = (MenuItem) event.getSource();
+            nuevoStage.initOwner(menuItem.getParentPopup().getOwnerWindow());
+
+            nuevoStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error al abrir la ventana flotante de Ver Perfil: " + e.getMessage());
+        }
     }
 }

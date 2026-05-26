@@ -46,7 +46,8 @@ public class ModificarController implements Initializable {
 
         cargarDatosUsuario();
     }
-
+    
+    //Método con IA
     private void cargarDatosUsuario() {
         User u = app.getCurrentUser();
         if (u == null) return;
@@ -64,6 +65,7 @@ public class ModificarController implements Initializable {
         }
     }
 
+    //Método con IA
     @FXML
     private void seleccionarAvatar() {
         FileChooser fc = new FileChooser();
@@ -152,7 +154,7 @@ public class ModificarController implements Initializable {
         lblMensaje.setVisible(true);
         lblMensaje.setManaged(true);
     }
-
+    //Método con IA
     private void limpiarErrores() {
         for (Label lbl : new Label[]{lblEmailError, lblPassError, lblFechaError, lblMensaje}) {
             lbl.setVisible(false);
