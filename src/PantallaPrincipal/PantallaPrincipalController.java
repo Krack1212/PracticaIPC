@@ -880,33 +880,4 @@ public class PantallaPrincipalController implements Initializable {
             (int)(c.getGreen() * 255),
             (int)(c.getBlue()  * 255));
     }
-
-    @FXML
-    private void abrirVerPerfil(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/VerPerfil/VerPerfil.fxml"));
-            Parent root = loader.load();
-
-            Scene nuevaEscena = new Scene(root);
-
-            Stage nuevoStage = new Stage();
-            nuevoStage.setScene(nuevaEscena);
-            nuevoStage.setTitle("Mi Perfil - Running la Safor");
-        
-            // CORRECCIÓN: Bloqueamos el redimensionamiento de la ventana flotante
-            nuevoStage.setResizable(false);
-        
-            // Bloquear la ventana de atrás mientras esta esté abierta
-            nuevoStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
-        
-            MenuItem menuItem = (MenuItem) event.getSource();
-            nuevoStage.initOwner(menuItem.getParentPopup().getOwnerWindow());
-
-            nuevoStage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Error al abrir la ventana flotante de Ver Perfil: " + e.getMessage());
-        }
-    }
 }

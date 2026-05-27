@@ -47,7 +47,6 @@
                     
                     <Menu text="Usuario">
                         <items>
-                     <MenuItem onAction="#abrirVerPerfil" text="Ver perfil" />
                             <MenuItem onAction="#abrirModificarPerfil" text="Modificar perfil..." />
                             <MenuItem onAction="#abrirHistorial" text="Historial de sesiones..." />
                             <SeparatorMenuItem />
